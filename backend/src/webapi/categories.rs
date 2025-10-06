@@ -2,10 +2,8 @@ use crate::models::category::Category;
 use crate::storage_system::storage_system::StorageSystem;
 use crate::webapi::api;
 use rocket::serde::json::Json;
-use rocket::serde::{Deserialize, Serialize};
 use rocket::{get, put, State};
 use sqlx::sqlite::SqliteQueryResult;
-use sqlx::{Error, FromRow};
 use std::{error, fmt};
 
 #[derive(Debug, Clone)]
@@ -62,14 +60,14 @@ impl Category {
     }
 }
 
-#[get("/kategorien?<limit>&<page>")]
+#[get("/categories?<limit>&<page>")]
 pub(crate) async fn get_category(app_state: &State<api::AppStatePointer>,
                                  limit: Option<i64>,
                                  page: Option<i64>) {
     todo!()
 }
 
-#[get("/kategorien/<id>")]
+#[get("/categories/<id>")]
 pub(crate) async fn get_category_by_id(app_state: &State<api::AppStatePointer>, id: i64) -> Option<Json<Category>> {
     let app_state = app_state.lock().await;
     let user_from_id = Category::from(app_state.get_database(), id).await;
@@ -81,7 +79,7 @@ pub(crate) async fn get_category_by_id(app_state: &State<api::AppStatePointer>, 
     }
 }
 
-#[put("/kategories")]
+#[put("/categories")]
 pub(crate) async fn put_category(app_state: &State<api::AppStatePointer>) -> Option<Json<Category>> {
     todo!()
 }
