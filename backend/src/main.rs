@@ -1,16 +1,17 @@
-use std::str::FromStr;
-use sqlx::{Pool, Sqlite};
 use sqlx::sqlite::{SqliteConnectOptions, SqliteJournalMode, SqlitePoolOptions};
+use sqlx::{Pool, Sqlite};
+use std::str::FromStr;
 
 mod storage_system;
 mod webapi;
+pub mod models;
 
 #[tokio::main]
 async fn main() -> anyhow::Result<()> {
     let database_filepath = "database.sqlite";
-    let _database_url = format!("{}{}", "sqlite://",database_filepath);
+    let database_url = format!("{}{}", "sqlite://", database_filepath);
 
-    let database = create_database_connection(_database_url).await?;
+    let database = create_database_connection(database_url).await?;
 
     // create storage_system
     let storage_system = storage_system::storage_system::StorageSystem::new(database);
@@ -35,6 +36,6 @@ async fn create_database_connection(database_url: String) -> Result<Pool<Sqlite>
         .connect_with(sqlite_options)
         .await?;
 
-        sqlx::migrate!().run(&database).await?;
+    sqlx::migrate!().run(&database).await?;
     Ok(database)
 }

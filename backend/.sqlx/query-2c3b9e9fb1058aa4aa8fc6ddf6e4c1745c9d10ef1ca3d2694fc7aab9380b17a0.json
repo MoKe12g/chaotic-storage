@@ -1,0 +1,26 @@
+{
+  "db_name": "SQLite",
+  "query": "SELECT * from categories where id = ?1;",
+  "describe": {
+    "columns": [
+      {
+        "name": "id",
+        "ordinal": 0,
+        "type_info": "Integer"
+      },
+      {
+        "name": "comment",
+        "ordinal": 1,
+        "type_info": "Text"
+      }
+    ],
+    "parameters": {
+      "Right": 1
+    },
+    "nullable": [
+      false,
+      false
+    ]
+  },
+  "hash": "2c3b9e9fb1058aa4aa8fc6ddf6e4c1745c9d10ef1ca3d2694fc7aab9380b17a0"
+}

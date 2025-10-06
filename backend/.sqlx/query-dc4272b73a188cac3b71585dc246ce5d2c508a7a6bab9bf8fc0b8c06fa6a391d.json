@@ -1,6 +1,6 @@
 {
   "db_name": "SQLite",
-  "query": "SELECT * from kategorien where id = ?1;",
+  "query": "SELECT * FROM categories where comment=?1 ORDER BY id ASC LIMIT 1;",
   "describe": {
     "columns": [
       {
@@ -22,5 +22,5 @@
       false
     ]
   },
-  "hash": "fe18f8074d498359393965e0b2b0ebdc8ab5838f65b08e28db7c157d480f63db"
+  "hash": "dc4272b73a188cac3b71585dc246ce5d2c508a7a6bab9bf8fc0b8c06fa6a391d"
 }

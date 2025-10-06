@@ -1,7 +1,7 @@
 use sqlx::{Pool, Sqlite};
 
-#[derive(Debug,Clone)]
-pub struct StorageSystem{
+#[derive(Debug, Clone)]
+pub struct StorageSystem {
     database: Pool<Sqlite>,
 }
 
@@ -13,7 +13,7 @@ impl StorageSystem {
 
 impl StorageSystem
 {
-    pub fn new(database: Pool<Sqlite>) -> StorageSystem{
+    pub fn new(database: Pool<Sqlite>) -> StorageSystem {
         StorageSystem {
             database,
         }

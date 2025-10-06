@@ -1,0 +1,12 @@
+{
+  "db_name": "SQLite",
+  "query": "INSERT INTO categories (comment) VALUES (?1);",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Right": 1
+    },
+    "nullable": []
+  },
+  "hash": "aa67901c5c6471e6929a9bda66115f234a478df4cf918c4fb026756f860a5f0b"
+}
