@@ -26,10 +26,10 @@ pub(crate) async fn get_allocation(app_state: &State<api::AppStatePointer>,
 #[get("/allocations/<id>")]
 pub(crate) async fn get_allocation_by_id(app_state: &State<api::AppStatePointer>, id: i64) -> Option<Json<Allocation>> {
     let app_state = app_state.lock().await;
-    let user_from_id = Allocation::from(app_state.get_storage_system(), id).await;
-    match user_from_id {
-        Ok(user_from_id) => {
-            user_from_id.map(Json)
+    let allocation_from_id = Allocation::from(app_state.get_storage_system(), id).await;
+    match allocation_from_id {
+        Ok(allocation_from_id) => {
+            allocation_from_id.map(Json)
         }
         Err(_) => { None }
     }

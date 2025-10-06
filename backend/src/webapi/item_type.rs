@@ -26,10 +26,10 @@ pub(crate) async fn get_item_type(app_state: &State<api::AppStatePointer>,
 #[get("/item_types/<id>")]
 pub(crate) async fn get_item_type_by_id(app_state: &State<api::AppStatePointer>, id: i64) -> Option<Json<ItemType>> {
     let app_state = app_state.lock().await;
-    let user_from_id = ItemType::from(app_state.get_storage_system(), id).await;
-    match user_from_id {
-        Ok(user_from_id) => {
-            user_from_id.map(Json)
+    let item_types_from_id = ItemType::from(app_state.get_storage_system(), id).await;
+    match item_types_from_id {
+        Ok(item_types_from_id) => {
+            item_types_from_id.map(Json)
         }
         Err(_) => { None }
     }

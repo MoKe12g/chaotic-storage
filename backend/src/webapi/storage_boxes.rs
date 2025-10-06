@@ -26,10 +26,10 @@ pub(crate) async fn get_storage_box(app_state: &State<api::AppStatePointer>,
 #[get("/storage_boxes/<id>")]
 pub(crate) async fn get_storage_box_by_id(app_state: &State<api::AppStatePointer>, id: i64) -> Option<Json<StorageBox>> {
     let app_state = app_state.lock().await;
-    let user_from_id = StorageBox::from(app_state.get_storage_system(), id).await;
-    match user_from_id {
-        Ok(user_from_id) => {
-            user_from_id.map(Json)
+    let storages_box_from_id = StorageBox::from(app_state.get_storage_system(), id).await;
+    match storages_box_from_id {
+        Ok(storages_box_from_id) => {
+            storages_box_from_id.map(Json)
         }
         Err(_) => { None }
     }

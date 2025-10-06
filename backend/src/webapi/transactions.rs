@@ -26,10 +26,10 @@ pub(crate) async fn get_transaction(app_state: &State<api::AppStatePointer>,
 #[get("/transactions/<id>")]
 pub(crate) async fn get_transaction_by_id(app_state: &State<api::AppStatePointer>, id: i64) -> Option<Json<Transaction>> {
     let app_state = app_state.lock().await;
-    let user_from_id = Transaction::from(app_state.get_storage_system(), id).await;
-    match user_from_id {
-        Ok(user_from_id) => {
-            user_from_id.map(Json)
+    let transaction_from_id = Transaction::from(app_state.get_storage_system(), id).await;
+    match transaction_from_id {
+        Ok(transaction_from_id) => {
+            transaction_from_id.map(Json)
         }
         Err(_) => { None }
     }

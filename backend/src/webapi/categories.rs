@@ -26,10 +26,10 @@ pub(crate) async fn get_category(app_state: &State<api::AppStatePointer>,
 #[get("/categories/<id>")]
 pub(crate) async fn get_category_by_id(app_state: &State<api::AppStatePointer>, id: i64) -> Option<Json<Category>> {
     let app_state = app_state.lock().await;
-    let user_from_id = Category::from(app_state.get_storage_system(), id).await;
-    match user_from_id {
-        Ok(user_from_id) => {
-            user_from_id.map(Json)
+    let categorie_from_id = Category::from(app_state.get_storage_system(), id).await;
+    match categorie_from_id {
+        Ok(categorie_from_id) => {
+            categorie_from_id.map(Json)
         }
         Err(_) => { None }
     }
