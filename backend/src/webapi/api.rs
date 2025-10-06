@@ -49,7 +49,7 @@ impl AppState {
         Arc::new(Mutex::new(new_app_state))
     }
 
-    pub fn get_database(&self) -> &StorageSystem {
+    pub fn get_storage_system(&self) -> &StorageSystem {
         &self.storage_system
     }
 }

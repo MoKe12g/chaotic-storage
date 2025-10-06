@@ -36,7 +36,7 @@ create table transactions
     FOREIGN KEY (allocation_id) REFERENCES allocations (id)
 );
 
-create table item_type
+create table item_types
 (
     id               INTEGER PRIMARY KEY not null,
     storage_property TEXT                not null
