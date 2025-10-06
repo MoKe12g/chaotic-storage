@@ -1,15 +1,15 @@
+use crate::models::allocations::Allocation;
 use crate::models::response::{EntriesCountResponse, MessageResponse};
 use crate::webapi::api;
 use rocket::response::status::BadRequest;
 use rocket::serde::json::Json;
 use rocket::{delete, get, patch, post, State};
 use sqlx::query_as;
-use crate::models::allocations::Allocation;
 
 #[get("/allocations?<limit>&<page>")]
 pub(crate) async fn get_allocation(app_state: &State<api::AppStatePointer>,
-                                 limit: Option<i64>,
-                                 page: Option<i64>) -> Result<Json<Vec<Allocation>>, BadRequest<Json<MessageResponse>>> {
+                                   limit: Option<i64>,
+                                   page: Option<i64>) -> Result<Json<Vec<Allocation>>, BadRequest<Json<MessageResponse>>> {
     let app_state = app_state.lock().await;
     let limit = limit.unwrap_or(12);
     let page = page.unwrap_or(1);
@@ -31,7 +31,7 @@ pub(crate) async fn get_allocation_by_id(app_state: &State<api::AppStatePointer>
         Ok(allocation_from_id) => {
             allocation_from_id.map(Json)
         }
-        Err(_) => { None }
+        Err(_) => None
     }
 }
 
@@ -41,7 +41,7 @@ pub async fn post_allocation(app_state: &State<api::AppStatePointer>, input: Jso
     let app_state = app_state.lock().await;
     // TODO: Is there a better way than to just discard the given id?
     let input = input.into_inner();
-    match Allocation::create(app_state.get_storage_system(),input.description,input.date_of_entry,input.can_be_outside,input.category_id,input.storage_box_id).await {
+    match Allocation::create(app_state.get_storage_system(), input.description, input.date_of_entry, input.can_be_outside, input.category_id, input.storage_box_id).await {
         Ok(result) => { Ok(Json(result.id.to_string())) }
         Err(err) => { Err(BadRequest(Json(MessageResponse { message: err.to_string() + " from backend" }))) }
     }
@@ -50,7 +50,7 @@ pub async fn post_allocation(app_state: &State<api::AppStatePointer>, input: Jso
 /// updates entry
 #[patch("/allocations/<id>", data = "<input>")]
 pub async fn patch_allocation(app_state: &State<api::AppStatePointer>, id: i64,
-                            input: Json<Allocation>) -> Result<Json<Allocation>, BadRequest<Json<MessageResponse>>> {
+                              input: Json<Allocation>) -> Result<Json<Allocation>, BadRequest<Json<MessageResponse>>> {
     let app_state = app_state.lock().await;
     let new_value = Allocation { id, description: input.description.clone(), date_of_entry: input.date_of_entry, can_be_outside: input.can_be_outside, category_id: input.category_id, storage_box_id: input.storage_box_id }; // make sure that the id is right inside the struct
     match new_value.update(app_state.get_storage_system()).await {

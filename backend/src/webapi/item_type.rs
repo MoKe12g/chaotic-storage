@@ -8,8 +8,8 @@ use sqlx::query_as;
 
 #[get("/item_types?<limit>&<page>")]
 pub(crate) async fn get_item_type(app_state: &State<api::AppStatePointer>,
-                                 limit: Option<i64>,
-                                 page: Option<i64>) -> Result<Json<Vec<ItemType>>, BadRequest<Json<MessageResponse>>> {
+                                  limit: Option<i64>,
+                                  page: Option<i64>) -> Result<Json<Vec<ItemType>>, BadRequest<Json<MessageResponse>>> {
     let app_state = app_state.lock().await;
     let limit = limit.unwrap_or(12);
     let page = page.unwrap_or(1);
@@ -49,7 +49,7 @@ pub async fn post_item_type(app_state: &State<api::AppStatePointer>, input: Json
 /// updates entry
 #[patch("/item_types/<id>", data = "<input>")]
 pub async fn patch_item_type(app_state: &State<api::AppStatePointer>, id: i64,
-                            input: Json<ItemType>) -> Result<Json<ItemType>, BadRequest<Json<MessageResponse>>> {
+                             input: Json<ItemType>) -> Result<Json<ItemType>, BadRequest<Json<MessageResponse>>> {
     let app_state = app_state.lock().await;
     let new_value = ItemType { id, storage_property: input.storage_property.clone() }; // make sure that the id is right inside the struct
     match new_value.update(app_state.get_storage_system()).await {

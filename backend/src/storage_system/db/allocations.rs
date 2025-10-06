@@ -1,9 +1,9 @@
+use crate::models::allocations::Allocation;
 use crate::storage_system::storage_system::StorageSystem;
+use chrono::NaiveDateTime;
 use sqlx::sqlite::SqliteQueryResult;
 use std::error::Error;
 use std::{error, fmt};
-use chrono::{NaiveDateTime};
-use crate::models::allocations::Allocation;
 
 #[derive(Debug, Clone)]
 pub struct DBInconsistentError;
@@ -27,7 +27,7 @@ impl Allocation {
     }
 
     pub async fn insert(storage_system: &StorageSystem, description: String, date_of_entry: NaiveDateTime,
-    can_be_outside: Option<bool>, category_id: i64, storage_box_id: i64) -> Result<Self, Box<dyn Error + Send + Sync>> {
+                        can_be_outside: Option<bool>, category_id: i64, storage_box_id: i64) -> Result<Self, Box<dyn Error + Send + Sync>> {
         Self::create(storage_system, description, date_of_entry, can_be_outside, category_id, storage_box_id).await
     }
 

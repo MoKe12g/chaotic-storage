@@ -16,6 +16,6 @@ pub struct EntriesCountResponse {
 #[derive(Debug, Deserialize, Serialize)]
 pub struct CountOfItemsInAllocation {
     pub allocation_id: i64,
-    pub item_count: u64,
+    pub item_count: i64,
 }
 
