@@ -1,0 +1,12 @@
+{
+  "db_name": "SQLite",
+  "query": "UPDATE main.categories SET comment == ?1 WHERE id == ?2;",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Right": 2
+    },
+    "nullable": []
+  },
+  "hash": "d54ce0082fc4299e09bd7cdc4aaa56d6680ef05d3a909a93fad3f39e02c58685"
+}

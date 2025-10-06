@@ -16,10 +16,8 @@ async fn main() -> anyhow::Result<()> {
     // create storage_system
     let storage_system = storage_system::storage_system::StorageSystem::new(database);
 
-    // creeate webapi with storage_system
-    let api = webapi::api::API::new(storage_system);
-
-    api.run().await.expect("TODO: panic message");
+    // create webapi with storage_system
+    webapi::api::API::new(storage_system).run().await?;
 
     println!("Shutting Down.");
     Ok(())

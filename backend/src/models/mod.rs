@@ -1,1 +1,1 @@
-pub mod mod_category;
+pub mod category;

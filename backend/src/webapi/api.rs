@@ -1,8 +1,8 @@
 use crate::storage_system::storage_system::StorageSystem;
 use crate::webapi::categories;
-use rocket::futures::lock::Mutex;
 use rocket::{routes, Error, Ignite, Rocket};
 use std::sync::Arc;
+use tokio::sync::Mutex;
 
 pub struct API
 {
@@ -16,14 +16,14 @@ impl API {
 
     pub(crate) async fn run(&self) -> anyhow::Result<Rocket<Ignite>, Error> {
         rocket::build()
-            .manage(AppState::new(self.storage_system.clone()) // TODO: Is clone the best way here?
+            .manage(AppState::new(self.storage_system.clone())
             )
             .mount(
                 "/",
                 routes![
                         // TODO: Routes,
                     categories::get_category,
-                    categories::get_kategory_by_id,
+                    categories::get_category_by_id,
                     categories::put_category,
                     ],
             )
@@ -35,6 +35,7 @@ pub struct AppState {
     storage_system: StorageSystem,
 }
 
+// Could be changed into State<StorageSystem> if no mutable value will be used
 pub type AppStatePointer = Arc<Mutex<AppState>>;
 
 impl AppState {

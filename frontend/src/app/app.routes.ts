@@ -6,9 +6,10 @@ import {TransactionsComponent} from './transactions-component/transactions-compo
 import {ItemTypesComponent} from './item-types-component/item-types-component';
 
 export const routes: Routes = [
-  {path: 'storage_boxes/:id', component: StorageBoxesComponent},
+  // TODO: Add default path {path: '', redirectTo: '/storage_boxes', pathMatch: 'full'},
+  {path: 'storage-boxes/:id', component: StorageBoxesComponent},
   {path: 'categories/:id', component: CategoriesComponent},
   {path: 'allocations/:id', component: AllocationsComponent},
   {path: 'transactions/:id', component: TransactionsComponent},
-  {path: 'item_type/:id', component: ItemTypesComponent},
+  {path: 'item-types/:id', component: ItemTypesComponent},
 ];
