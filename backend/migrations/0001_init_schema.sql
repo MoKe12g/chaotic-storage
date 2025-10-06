@@ -5,7 +5,7 @@ create table storage_boxes
     id        INTEGER PRIMARY KEY not null,
     place     TEXT                not null,
     item_type INTEGER             not null,
-    FOREIGN KEY (item_type) REFERENCES item_type (id)
+    FOREIGN KEY (item_type) REFERENCES item_types (id)
 );
 
 create table categories

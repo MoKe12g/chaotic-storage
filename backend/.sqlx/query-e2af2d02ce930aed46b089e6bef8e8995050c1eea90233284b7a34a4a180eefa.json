@@ -1,0 +1,12 @@
+{
+  "db_name": "SQLite",
+  "query": "UPDATE storage_boxes SET place = ?1, item_type = ?3 WHERE id == ?2;",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Right": 3
+    },
+    "nullable": []
+  },
+  "hash": "e2af2d02ce930aed46b089e6bef8e8995050c1eea90233284b7a34a4a180eefa"
+}

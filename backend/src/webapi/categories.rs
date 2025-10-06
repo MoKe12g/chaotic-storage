@@ -17,8 +17,8 @@ pub(crate) async fn get_category(app_state: &State<api::AppStatePointer>,
     let end = limit * (page + 1) - 1;
     match query_as!(Category, "SELECT * FROM categories WHERE id BETWEEN ?1 AND ?2;", start, end).fetch_all(app_state.get_storage_system().get_database()).await {
         Ok(result) => {
-                Ok(Json(result))
-        },
+            Ok(Json(result))
+        }
         Err(err) => Err(BadRequest(Json(MessageResponse { message: err.to_string() + " from backend" })))
     }
 }

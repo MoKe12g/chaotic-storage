@@ -1,0 +1,12 @@
+{
+  "db_name": "SQLite",
+  "query": "UPDATE main.transactions SET allocation_id == ?1, item_delta = ?3, date = ?4 WHERE id == ?2;",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Right": 4
+    },
+    "nullable": []
+  },
+  "hash": "f58b57b694493a947ac0184bfc68321b75ab78eae02590ca5043d436501b7387"
+}

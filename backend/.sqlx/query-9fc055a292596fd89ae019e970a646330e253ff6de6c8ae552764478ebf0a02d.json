@@ -1,0 +1,12 @@
+{
+  "db_name": "SQLite",
+  "query": "UPDATE main.item_types SET storage_property == ?1 WHERE id == ?2;",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Right": 2
+    },
+    "nullable": []
+  },
+  "hash": "9fc055a292596fd89ae019e970a646330e253ff6de6c8ae552764478ebf0a02d"
+}

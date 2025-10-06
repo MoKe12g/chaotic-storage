@@ -1,5 +1,5 @@
 use crate::storage_system::storage_system::StorageSystem;
-use crate::webapi::categories;
+use crate::webapi::{allocations, categories, item_type, storage_boxes, transactions};
 use rocket::{routes, Error, Ignite, Rocket};
 use std::sync::Arc;
 use tokio::sync::Mutex;
@@ -28,6 +28,30 @@ impl API {
                     categories::delete_category,
                     categories::post_category,
                     categories::count_category_entries,
+                    storage_boxes::get_storage_box,
+                    storage_boxes::get_storage_box_by_id,
+                    storage_boxes::patch_storage_box,
+                    storage_boxes::delete_storage_box,
+                    storage_boxes::post_storage_box,
+                    storage_boxes::count_storage_box_entries,
+                    allocations::get_allocation,
+                    allocations::get_allocation_by_id,
+                    allocations::patch_allocation,
+                    allocations::delete_allocation,
+                    allocations::post_allocation,
+                    allocations::count_allocation_entries,
+                    transactions::get_transaction,
+                    transactions::get_transaction_by_id,
+                    transactions::patch_transaction,
+                    transactions::delete_transaction,
+                    transactions::post_transaction,
+                    transactions::count_transaction_entries,
+                    item_type::get_item_type,
+                    item_type::get_item_type_by_id,
+                    item_type::patch_item_type,
+                    item_type::delete_item_type,
+                    item_type::post_item_type,
+                    item_type::count_item_type_entries,
                     ],
             )
             .launch().await
