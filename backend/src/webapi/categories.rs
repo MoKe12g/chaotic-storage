@@ -1,7 +1,10 @@
 use crate::models::category::Category;
+use crate::models::response::{EntriesCountResponse, MessageResponse};
 use crate::webapi::api;
+use rocket::response::status::BadRequest;
 use rocket::serde::json::Json;
-use rocket::{get, put, State};
+use rocket::{delete, get, patch, post, State};
+use sqlx::query_as;
 
 #[get("/categories?<limit>&<page>")]
 pub(crate) async fn get_category(app_state: &State<api::AppStatePointer>,
@@ -22,7 +25,62 @@ pub(crate) async fn get_category_by_id(app_state: &State<api::AppStatePointer>, 
     }
 }
 
-#[put("/categories")]
-pub(crate) async fn put_category(app_state: &State<api::AppStatePointer>) -> Option<Json<Category>> {
-    todo!()
+/// creates entry
+#[post("/categories", data = "<input>")]
+pub async fn post_category(app_state: &State<api::AppStatePointer>, input: Json<Category>) -> Result<Json<String>, BadRequest<Json<MessageResponse>>> {
+    let app_state = app_state.lock().await;
+    // TODO: Is there a better way than to just discard the given id?
+    match Category::create(app_state.get_database(), input.into_inner().comment).await {
+        Ok(result) => { Ok(Json(result.id.to_string())) }
+        Err(err) => { Err(BadRequest(Json(MessageResponse { message: err.to_string() + " from backend" }))) }
+    }
+}
+
+/// updates entry
+#[patch("/categories/<id>", data = "<input>")]
+pub async fn patch_category(app_state: &State<api::AppStatePointer>, id: i64,
+                            input: Json<Category>) -> Result<Json<Category>, BadRequest<Json<MessageResponse>>> {
+    let app_state = app_state.lock().await;
+    let new_value = Category { id, comment: input.comment.clone() }; // make sure that the id is right inside the struct
+    match new_value.update(app_state.get_database()).await {
+        Ok(_) => { Ok(Json(new_value)) }
+        Err(err) => { Err(BadRequest(Json(MessageResponse { message: err.to_string() + " from backend" }))) }
+    }
+}
+
+#[delete("/categories/<id>")]
+pub async fn delete_category(app_state: &State<api::AppStatePointer>, id: i64) -> Result<Json<Category>, BadRequest<Json<MessageResponse>>> {
+    let app_state = app_state.lock().await;
+    match Category::from(app_state.get_database(), id).await {
+        Ok(result) => {
+            match result {
+                None => { Err(BadRequest(Json(MessageResponse { message: "Cannot find element".to_string() }))) } // BadRequest(Json(MessageResponse { message: "Cannot find id ".to_owned() + &*id.to_string() })))}
+                Some(result2) => {
+                    let category = result2.clone();
+                    match result2.delete(app_state.get_database()).await {
+                        Ok(_) => { Ok(Json(category)) }
+                        Err(err) => Err(BadRequest(Json(MessageResponse { message: err.to_string() + " from backend" })))
+                    }
+                }
+            }
+        }
+        Err(err) => { Err(BadRequest(Json(MessageResponse { message: err.to_string() + " from backend" }))) }
+    }
+}
+
+// misc
+// TODO: Anzahl von erstellten Kategorien
+#[get("/count/categories")]
+pub async fn count_category_entries(app_state: &State<api::AppStatePointer>) -> Result<Json<EntriesCountResponse>, BadRequest<Json<MessageResponse>>> {
+    let result = query_as!(EntriesCountResponse, "SELECT COUNT(id) AS count, 'categories' AS 'table' FROM categories;").fetch_optional(app_state.lock().await.get_database().get_database()).await;
+    match result {
+        Ok(result) => {
+            match result
+            {
+                None => { Err(BadRequest(Json(MessageResponse { message: "Backend couldn't answer the request".to_string() }))) }
+                Some(result) => Ok(Json(result))
+            }
+        }
+        Err(err) => { Err(BadRequest(Json(MessageResponse { message: err.to_string() + " from backend" }))) }
+    }
 }

@@ -1,26 +1,26 @@
 {
   "db_name": "SQLite",
-  "query": "SELECT * FROM categories where comment=?1 ORDER BY id ASC LIMIT 1;",
+  "query": "SELECT COUNT(id) AS count, 'categories' AS 'table' FROM categories;",
   "describe": {
     "columns": [
       {
-        "name": "id",
+        "name": "count",
         "ordinal": 0,
         "type_info": "Integer"
       },
       {
-        "name": "comment",
+        "name": "table",
         "ordinal": 1,
         "type_info": "Text"
       }
     ],
     "parameters": {
-      "Right": 1
+      "Right": 0
     },
     "nullable": [
       false,
       false
     ]
   },
-  "hash": "dc4272b73a188cac3b71585dc246ce5d2c508a7a6bab9bf8fc0b8c06fa6a391d"
+  "hash": "efb16ec8c31ad8ac3a7a6294b2a8ac96f8a556e70a57956231c4c214b2c321ef"
 }

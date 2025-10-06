@@ -194,6 +194,7 @@ dependencies = [
  "log",
  "rocket",
  "serde",
+ "serde_json",
  "sqlx",
  "tokio",
 ]

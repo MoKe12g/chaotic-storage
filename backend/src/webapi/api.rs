@@ -24,7 +24,10 @@ impl API {
                         // TODO: Routes,
                     categories::get_category,
                     categories::get_category_by_id,
-                    categories::put_category,
+                    categories::patch_category,
+                    categories::delete_category,
+                    categories::post_category,
+                    categories::count_category_entries,
                     ],
             )
             .launch().await
