@@ -1,1 +1,27 @@
-<p>storage-boxes-component works!</p>
+<a routerLink="/storage-box/-1">Create Storage Box</a>
+
+<p>Storage Boxes page {{ page }}</p>
+<table>
+  <tr>
+    <td>Id</td>
+    <td>Place</td>
+    <td>Item Type</td>
+  </tr>
+  @for (storageBox of data; track storageBox.id) {
+    <tr>
+      <td><a routerLink="/storage-box/{{ storageBox.id }}">{{ storageBox.id }}</a></td>
+      <td>{{ storageBox.place }}</td>
+      <td>{{storageBox.item_type}}</td>
+    </tr>
+  } @empty {
+    No items available.
+  }
+</table>
+<hr/>
+<p>
+  <strong>
+    <p>Shows {{ data.length }} from {{ elementCount }} elements in table {{ table }}.</p>
+    <p>Page {{ page }}
+      (/ {{ Math.ceil(elementCount / entriesPerPage) - 1 }}) with {{ entriesPerPage }} entries per page.</p>
+  </strong>
+</p>

@@ -1,15 +1,8 @@
-import {Component, Injectable} from '@angular/core';
+import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {Category} from '../relations/category';
 import {EntriesCount} from '../returns/entries-count';
-
-@Component({
-  selector: 'app-category-service',
-  imports: [],
-  templateUrl: './category-service.html',
-  styleUrl: './category-service.css'
-})
 
 @Injectable({
     providedIn: 'root'

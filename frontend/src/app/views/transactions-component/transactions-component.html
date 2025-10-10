@@ -1,1 +1,29 @@
-<p>transactions-component works!</p>
+<a routerLink="/transaction/-1">Create Transaction</a>
+
+<p>Transactions page {{ page }}</p>
+<table>
+  <tr>
+    <td>Id</td>
+    <td>Allocation</td>
+    <td>Item Delta</td>
+    <td>Date</td>
+  </tr>
+  @for (category of data; track category.id) {
+    <tr>
+      <td><a routerLink="/category/{{ category.id }}">{{ category.id }}</a></td>
+      <td>{{ category.allocation_id }}</td>
+      <td>{{ category.item_delta }}</td>
+      <td>{{ category.date }}</td>
+    </tr>
+  } @empty {
+    No items available.
+  }
+</table>
+<hr/>
+<p>
+  <strong>
+    <p>Shows {{ data.length }} from {{ elementCount }} elements in table {{ table }}.</p>
+    <p>Page {{ page }}
+      (/ {{ Math.ceil(elementCount / entriesPerPage) - 1 }}) with {{ entriesPerPage }} entries per page.</p>
+  </strong>
+</p>

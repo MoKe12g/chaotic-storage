@@ -1,3 +1,4 @@
+use crate::webapi::naivedatetime_deserialization::deserialize_datetime;
 use chrono::NaiveDateTime;
 use rocket::serde::{Deserialize, Serialize};
 use sqlx::FromRow;
@@ -6,6 +7,7 @@ use sqlx::FromRow;
 pub struct Allocation {
     pub(crate) id: i64,
     pub(crate) description: String,
+    #[serde(deserialize_with = "deserialize_datetime")]
     pub(crate) date_of_entry: NaiveDateTime,
     pub(crate) can_be_outside: Option<bool>,
     pub(crate) category_id: i64,

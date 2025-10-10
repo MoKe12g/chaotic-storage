@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {CategoryService} from '../../category-service/category-service';
+import {CategoryService} from '../../services/category-service';
 import {Category} from '../../relations/category';
 import {take} from 'rxjs';
 import {ActivatedRoute, RouterLink} from '@angular/router';

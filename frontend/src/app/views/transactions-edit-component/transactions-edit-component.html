@@ -1,1 +1,66 @@
-<p>transactions-edit-component works!</p>
+<p>Id "-1" means that the transaction isn't created yet.</p>
+<br/>
+<form>
+  <table class="form-group">
+    <tr>
+      <td><label>Id</label></td>
+      <td><label>{{ transaction.id }}</label></td>
+    </tr>
+    <tr>
+      <td><label>Allocation</label></td>
+      <td>
+        <input
+          (input)="logContent()"
+          [(ngModel)]="transaction.allocation_id"
+          class="form-control"
+          name="number_allocation"
+          placeholder="Type the allocation id here"
+          required
+          type="number"
+        />
+      </td>
+    </tr>
+    <tr>
+      <td><label>Item Delta</label></td>
+      <td>
+        <input
+          (input)="logContent()"
+          [(ngModel)]="transaction.item_delta"
+          class="form-control"
+          name="number_item_delta"
+          placeholder="Type the item delta here"
+          required
+          type="number"
+        />
+      </td>
+    </tr>
+    <tr>
+      <td><label>Date</label></td>
+      <td>
+        <input
+          (input)="logContent()"
+          [(ngModel)]="transaction.date"
+          class="form-control"
+          name="date_of_creation"
+          placeholder="Type the date here"
+          required
+          type="datetime-local"
+        />
+      </td>
+    </tr>
+    <tr></tr>
+    <tr>
+      <td>@if (transaction.id == -1) {
+        <button (click)="postTransaction()">POST (insert)</button>
+      }</td>
+      <td>
+        @if (transaction.id != -1) {
+          <button (click)="patchTransaction()">PATCH (update)</button>
+        }</td>
+      <td>
+        @if (transaction.id != -1) {
+          <button (click)="deleteTransaction()">DELETE</button>
+        }</td>
+    </tr>
+  </table>
+</form>

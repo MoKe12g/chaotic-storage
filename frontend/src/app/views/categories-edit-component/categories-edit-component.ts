@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {CategoryService} from '../../category-service/category-service';
+import {CategoryService} from '../../services/category-service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Category} from '../../relations/category';
 import {take} from 'rxjs';
@@ -49,7 +49,7 @@ export class CategoriesEditComponent {
 
   postCategory() {
     this.categoryService.postCategory(this.category).pipe(take(1)).subscribe({
-      error: (e) => alert(e),
+      error: (e) => alert(e.message),
       next: (response) => {
         alert("HTTP Patch Request completed");
         this.category = response;
@@ -66,7 +66,7 @@ export class CategoriesEditComponent {
 
   patchCategory() {
     this.categoryService.patchCategory(this.category).pipe(take(1)).subscribe({
-      error: (e) => alert(e),
+      error: (e) => alert(e.message),
       next: (response) => {
         alert("HTTP Patch Request completed");
         this.category = response;
@@ -76,7 +76,7 @@ export class CategoriesEditComponent {
 
   deleteCategory() {
     this.categoryService.deleteCategory(this.category.id).pipe(take(1)).subscribe({
-      error: (e) => alert(e),
+      error: (e) => alert(e.message),
       next: (response) => {
         alert("HTTP Patch Request completed");
         this.router.navigate(['/categories']).then(r => {
