@@ -12,7 +12,7 @@ pub(crate) async fn get_category(app_state: &State<api::AppStatePointer>,
                                  page: Option<i64>) -> Result<Json<Vec<Category>>, BadRequest<Json<MessageResponse>>> {
     let app_state = app_state.lock().await;
     let limit = limit.unwrap_or(12);
-    let page = page.unwrap_or(1);
+    let page = page.unwrap_or(0);
     let start = limit * page;
     let end = limit * (page + 1) - 1;
     match query_as!(Category, "SELECT * FROM categories WHERE id BETWEEN ?1 AND ?2;", start, end).fetch_all(app_state.get_storage_system().get_database()).await {
@@ -37,11 +37,11 @@ pub(crate) async fn get_category_by_id(app_state: &State<api::AppStatePointer>, 
 
 /// creates entry
 #[post("/categories", data = "<input>")]
-pub async fn post_category(app_state: &State<api::AppStatePointer>, input: Json<Category>) -> Result<Json<String>, BadRequest<Json<MessageResponse>>> {
+pub async fn post_category(app_state: &State<api::AppStatePointer>, input: Json<Category>) -> Result<Json<Category>, BadRequest<Json<MessageResponse>>> {
     let app_state = app_state.lock().await;
     // TODO: Is there a better way than to just discard the given id?
     match Category::create(app_state.get_storage_system(), input.into_inner().comment).await {
-        Ok(result) => { Ok(Json(result.id.to_string())) }
+        Ok(result) => { Ok(Json(result)) }
         Err(err) => { Err(BadRequest(Json(MessageResponse { message: err.to_string() + " from backend" }))) }
     }
 }

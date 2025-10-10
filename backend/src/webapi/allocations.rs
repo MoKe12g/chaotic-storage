@@ -12,7 +12,7 @@ pub(crate) async fn get_allocation(app_state: &State<api::AppStatePointer>,
                                    page: Option<i64>) -> Result<Json<Vec<Allocation>>, BadRequest<Json<MessageResponse>>> {
     let app_state = app_state.lock().await;
     let limit = limit.unwrap_or(12);
-    let page = page.unwrap_or(1);
+    let page = page.unwrap_or(0);
     let start = limit * page;
     let end = limit * (page + 1) - 1;
     match query_as!(Allocation, "SELECT * FROM allocations WHERE id BETWEEN ?1 AND ?2;", start, end).fetch_all(app_state.get_storage_system().get_database()).await {
@@ -37,12 +37,12 @@ pub(crate) async fn get_allocation_by_id(app_state: &State<api::AppStatePointer>
 
 /// creates entry
 #[post("/allocations", data = "<input>")]
-pub async fn post_allocation(app_state: &State<api::AppStatePointer>, input: Json<Allocation>) -> Result<Json<String>, BadRequest<Json<MessageResponse>>> {
+pub async fn post_allocation(app_state: &State<api::AppStatePointer>, input: Json<Allocation>) -> Result<Json<Allocation>, BadRequest<Json<MessageResponse>>> {
     let app_state = app_state.lock().await;
     // TODO: Is there a better way than to just discard the given id?
     let input = input.into_inner();
     match Allocation::create(app_state.get_storage_system(), input.description, input.date_of_entry, input.can_be_outside, input.category_id, input.storage_box_id).await {
-        Ok(result) => { Ok(Json(result.id.to_string())) }
+        Ok(result) => { Ok(Json(result)) }
         Err(err) => { Err(BadRequest(Json(MessageResponse { message: err.to_string() + " from backend" }))) }
     }
 }
