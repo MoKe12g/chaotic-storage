@@ -1,0 +1,25 @@
+<a routerLink="/category/-1">Create Category</a>
+
+<p>Categories page {{ page }}</p>
+<table>
+  <tr>
+    <td>Id</td>
+    <td>Comment</td>
+  </tr>
+  @for (category of data; track category.id) {
+    <tr>
+      <td><a routerLink="/category/{{ category.id }}">{{ category.id }}</a></td>
+      <td>{{ category.comment }}</td>
+    </tr>
+  } @empty {
+    No items available.
+  }
+</table>
+<hr/>
+<p>
+  <strong>
+    <p>Shows {{ data.length }} from {{ elementCount }} elements in table {{ table }}.</p>
+    <p>Page {{ page }}
+      (/ {{ Math.ceil(elementCount / entriesPerPage) - 1 }}) with {{ entriesPerPage }} entries per page.</p>
+  </strong>
+</p>

@@ -1,0 +1,12 @@
+{
+  "db_name": "SQLite",
+  "query": "INSERT INTO transactions (allocation_id, item_delta, date) VALUES (?1, ?2, ?3);",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Right": 3
+    },
+    "nullable": []
+  },
+  "hash": "b969cb6df3a42802229260905f86022e0ffb036f4eb7781d65ca047e15433151"
+}

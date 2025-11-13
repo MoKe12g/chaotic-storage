@@ -1,0 +1,12 @@
+{
+  "db_name": "SQLite",
+  "query": "UPDATE allocations SET description == ?1, date_of_entry == ?3, can_be_outside == ?4, category_id == ?5, storage_box_id == ?6 WHERE id == ?2;",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Right": 6
+    },
+    "nullable": []
+  },
+  "hash": "a9907dce10960674fae54ddb0fe87df2a48d6da7e7db261a63ffd0b8fd01f77b"
+}

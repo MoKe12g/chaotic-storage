@@ -1,0 +1,29 @@
+<a routerLink="/transaction/-1">Create Transaction</a>
+
+<p>Transactions page {{ page }}</p>
+<table>
+  <tr>
+    <td>Id</td>
+    <td>Allocation</td>
+    <td>Item Delta</td>
+    <td>Date</td>
+  </tr>
+  @for (transaction of data; track transaction.id) {
+    <tr>
+      <td><a routerLink="/transaction/{{ transaction.id }}">{{ transaction.id }}</a></td>
+      <td>{{ transaction.allocation_id }}</td>
+      <td>{{ transaction.item_delta }}</td>
+      <td>{{ transaction.date }}</td>
+    </tr>
+  } @empty {
+    No items available.
+  }
+</table>
+<hr/>
+<p>
+  <strong>
+    <p>Shows {{ data.length }} from {{ elementCount }} elements in table {{ table }}.</p>
+    <p>Page {{ page }}
+      (/ {{ Math.ceil(elementCount / entriesPerPage) - 1 }}) with {{ entriesPerPage }} entries per page.</p>
+  </strong>
+</p>

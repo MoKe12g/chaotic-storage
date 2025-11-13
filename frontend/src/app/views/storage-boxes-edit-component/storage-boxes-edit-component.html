@@ -1,0 +1,56 @@
+<p>Id "-1" means that the storage-box isn't created yet.</p>
+<br/>
+<form>
+  <table class="form-group">
+    <tr>
+      <td><label>Id</label></td>
+      <td><label>{{ storageBox.id }}</label></td>
+    </tr>
+    <tr>
+      <td><label>Place</label></td>
+      <td>
+        <input
+          (input)="logContent()"
+          [(ngModel)]="storageBox.place"
+          class="form-control"
+          name="text_place"
+          placeholder="Type the place here"
+          required
+          type="text"
+        />
+      </td>
+    </tr>
+    <tr>
+      <td><label>Item type</label></td>
+      <td>
+        <input
+          (input)="logContent()"
+          [(ngModel)]="storageBox.item_type"
+          class="form-control"
+          name="number_item_type"
+          placeholder="Type the item type here"
+          required
+          type="number"
+        />
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <br/>
+      </td>
+    </tr>
+    <tr>
+      <td>@if (storageBox.id == -1) {
+        <button (click)="postStorageBox()">POST (insert)</button>
+      }</td>
+      <td>
+        @if (storageBox.id != -1) {
+          <button (click)="patchStorageBox()">PATCH (update)</button>
+        }</td>
+      <td>
+        @if (storageBox.id != -1) {
+          <button (click)="deleteStorageBox()">DELETE</button>
+        }</td>
+    </tr>
+  </table>
+</form>

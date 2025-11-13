@@ -1,0 +1,25 @@
+<a routerLink="/item-type/-1">Create ItemType</a>
+
+<p>ItemTypes page {{ page }}</p>
+<table>
+  <tr>
+    <td>Id</td>
+    <td>Storage Property</td>
+  </tr>
+  @for (itemType of data; track itemType.id) {
+    <tr>
+      <td><a routerLink="/item-type/{{ itemType.id }}">{{ itemType.id }}</a></td>
+      <td>{{ itemType.storage_property }}</td>
+    </tr>
+  } @empty {
+    No items available.
+  }
+</table>
+<hr/>
+<p>
+  <strong>
+    <p>Shows {{ data.length }} from {{ elementCount }} elements in table {{ table }}.</p>
+    <p>Page {{ page }}
+      (/ {{ Math.ceil(elementCount / entriesPerPage) - 1 }}) with {{ entriesPerPage }} entries per page.</p>
+  </strong>
+</p>

@@ -1,0 +1,12 @@
+{
+  "db_name": "SQLite",
+  "query": "INSERT INTO item_types (storage_property) VALUES (?1);",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Right": 1
+    },
+    "nullable": []
+  },
+  "hash": "50cd3d98fac69d2947b84a2a3eb46e9b2405ea71be2cb34b4d535fb673e431d8"
+}

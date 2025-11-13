@@ -1,0 +1,26 @@
+{
+  "db_name": "SQLite",
+  "query": "SELECT COUNT(id) AS count, 'item_types' AS 'table' FROM item_types;",
+  "describe": {
+    "columns": [
+      {
+        "name": "count",
+        "ordinal": 0,
+        "type_info": "Integer"
+      },
+      {
+        "name": "table",
+        "ordinal": 1,
+        "type_info": "Text"
+      }
+    ],
+    "parameters": {
+      "Right": 0
+    },
+    "nullable": [
+      false,
+      false
+    ]
+  },
+  "hash": "28dbfd5ad4892a5137ca9c7563f49ec6ab995793f34c2c7cf77a95b094286bec"
+}

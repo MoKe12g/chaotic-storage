@@ -1,0 +1,42 @@
+<p>Id "-1" means that the item type isn't created yet.</p>
+<br/>
+<form>
+  <table class="form-group">
+    <tr>
+      <td><label>Id</label></td>
+      <td><label>{{ itemType.id }}</label></td>
+    </tr>
+    <tr>
+      <td><label>Storage Property</label></td>
+      <td>
+        <input
+          (input)="logContent()"
+          [(ngModel)]="itemType.storage_property"
+          class="form-control"
+          name="text_storage_property"
+          placeholder="Type the storage property here"
+          required
+          type="text"
+        />
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <br/>
+      </td>
+    </tr>
+    <tr>
+      <td>@if (itemType.id == -1) {
+        <button (click)="postCategory()">POST (insert)</button>
+      }</td>
+      <td>
+        @if (itemType.id != -1) {
+          <button (click)="patchCategory()">PATCH (update)</button>
+        }</td>
+      <td>
+        @if (itemType.id != -1) {
+          <button (click)="deleteCategory()">DELETE</button>
+        }</td>
+    </tr>
+  </table>
+</form>

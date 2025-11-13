@@ -1,0 +1,26 @@
+{
+  "db_name": "SQLite",
+  "query": "SELECT sum(item_delta) as 'item_count!', (allocation_id) as 'allocation_id!' from transactions where allocation_id = ?1 LIMIT 1;",
+  "describe": {
+    "columns": [
+      {
+        "name": "item_count!",
+        "ordinal": 0,
+        "type_info": "Integer"
+      },
+      {
+        "name": "allocation_id!",
+        "ordinal": 1,
+        "type_info": "Integer"
+      }
+    ],
+    "parameters": {
+      "Right": 1
+    },
+    "nullable": [
+      true,
+      true
+    ]
+  },
+  "hash": "ccbfd758045dce19c2f67a7ec729a21c42f3707e645bb9e7889df3561f753348"
+}

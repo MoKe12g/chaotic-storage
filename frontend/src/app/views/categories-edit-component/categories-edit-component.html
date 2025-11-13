@@ -1,0 +1,42 @@
+<p>Id "-1" means that the category isn't created yet.</p>
+<br/>
+<form>
+  <table class="form-group">
+    <tr>
+      <td><label>Id</label></td>
+      <td><label>{{ category.id }}</label></td>
+    </tr>
+    <tr>
+      <td><label>Comment</label></td>
+      <td>
+        <input
+          (input)="logContent()"
+          [(ngModel)]="category.comment"
+          class="form-control"
+          name="text_comment"
+          placeholder="Type your comment here"
+          required
+          type="text"
+        />
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <br/>
+      </td>
+    </tr>
+    <tr>
+      <td>@if (category.id == -1) {
+        <button (click)="postCategory()">POST (insert)</button>
+      }</td>
+      <td>
+        @if (category.id != -1) {
+          <button (click)="patchCategory()">PATCH (update)</button>
+        }</td>
+      <td>
+        @if (category.id != -1) {
+          <button (click)="deleteCategory()">DELETE</button>
+        }</td>
+    </tr>
+  </table>
+</form>

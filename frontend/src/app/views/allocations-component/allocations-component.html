@@ -1,0 +1,33 @@
+<a routerLink="/allocation/-1">Create Allocation</a>
+
+<p>Allocations page {{ page }}</p>
+<table>
+  <tr>
+    <td>Id</td>
+    <td>Description</td>
+    <td>Date</td>
+    <td>can be outside</td>
+    <td>category</td>
+    <td>storage box</td>
+  </tr>
+  @for (allocation of data; track allocation.id) {
+    <tr>
+      <td><a routerLink="/allocation/{{ allocation.id }}">{{ allocation.id }}</a></td>
+      <td>{{ allocation.description }}</td>
+      <td>{{ allocation.date_of_entry }}</td>
+      <td>{{ allocation.can_be_outside }}</td>
+      <td>{{ allocation.category_id }}</td>
+      <td>{{ allocation.storage_box_id }}</td>
+    </tr>
+  } @empty {
+    No items available.
+  }
+</table>
+<hr/>
+<p>
+  <strong>
+    <p>Shows {{ data.length }} from {{ elementCount }} elements in table {{ table }}.</p>
+    <p>Page {{ page }}
+      (/ {{ Math.ceil(elementCount / entriesPerPage) - 1 }}) with {{ entriesPerPage }} entries per page.</p>
+  </strong>
+</p>

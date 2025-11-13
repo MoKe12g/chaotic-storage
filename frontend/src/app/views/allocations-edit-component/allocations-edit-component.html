@@ -1,0 +1,95 @@
+<p>Id "-1" means that the allocation isn't created yet.</p>
+<br/>
+<form>
+  <table class="form-group">
+    <tr>
+      <td><label>Id</label></td>
+      <td><label>{{ allocation.id }}</label></td>
+    </tr>
+    <tr>
+      <td><label>Description</label></td>
+      <td>
+        <input
+          (input)="logContent()"
+          [(ngModel)]="allocation.description"
+          class="form-control"
+          name="text_description"
+          placeholder="Type the description here"
+          required
+          type="text"
+        />
+      </td>
+    </tr>
+    <tr>
+      <td><label>Date</label></td>
+      <td>
+        <input
+          (input)="logContent()"
+          [(ngModel)]="allocation.date_of_entry"
+          class="form-control"
+          name="date_of_entry"
+          required
+          type="datetime-local"
+        />
+      </td>
+    </tr>
+    <tr>
+      <td><label>Can be outside</label></td>
+      <td>
+        <input
+          (input)="logContent()"
+          [(ngModel)]="allocation.can_be_outside"
+          class="form-control"
+          name="bool_can_be_outside"
+          type="checkbox"
+        />
+      </td>
+    </tr>
+    <tr>
+      <td><label>Category</label></td>
+      <td>
+        <input
+          (input)="logContent()"
+          [(ngModel)]="allocation.category_id"
+          class="form-control"
+          name="number_category"
+          placeholder="Type the category id here"
+          required
+          type="number"
+        />
+      </td>
+    </tr>
+    <tr>
+      <td><label>Storage Box</label></td>
+      <td>
+        <input
+          (input)="logContent()"
+          [(ngModel)]="allocation.storage_box_id"
+          class="form-control"
+          name="number_storage_box_id"
+          placeholder="Type the storage box id here"
+          required
+          type="number"
+        />
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <br/>
+      </td>
+    </tr>
+    <tr>
+      <td>@if (allocation.id == -1) {
+        <button (click)="postAllocation()">POST (insert)</button>
+      }</td>
+      <td>
+        @if (allocation.id != -1) {
+          <button (click)="patchAllocation()">PATCH (update)</button>
+        }</td>
+      <td>
+        @if (allocation.id != -1) {
+          <button (click)="deleteAllocation()">DELETE</button>
+        }</td>
+    </tr>
+  </table>
+</form>
