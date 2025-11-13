@@ -26,7 +26,7 @@ export class AllocationsComponent implements OnInit {
 
   ngOnInit(): void {
     const newPageParam = this.route.snapshot.params['page'];
-    if (newPageParam !== null) {
+    if (newPageParam !== undefined) {
       const parsed = Number(newPageParam)
       if (!Number.isNaN(parsed)) this.page = parsed;
     }
