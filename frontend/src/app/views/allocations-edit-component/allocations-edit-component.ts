@@ -38,11 +38,11 @@ export class AllocationsEditComponent implements OnInit {
     console.log('Allocation ID:', this.allocationId);
   }
 
-  getAllocation(categoryId: number) {
-    this.allocationService.getAllocation(categoryId).pipe(take(1)).subscribe(
+  getAllocation(allocationId: number) {
+    this.allocationService.getAllocation(allocationId).pipe(take(1)).subscribe(
       (response) => {
         this.allocation = response;
-        console.log("replaced the category");
+        console.log("replaced the allocation");
       }
     )
   }

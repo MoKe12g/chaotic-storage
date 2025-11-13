@@ -20,22 +20,26 @@ export class StorageBoxesComponent implements OnInit {
   entriesPerPage: number = 64;
   protected readonly Math = Math;
 
-  constructor(private StorageBoxService: StorageBoxService,
+  constructor(private storageBoxService: StorageBoxService,
               private route: ActivatedRoute) {
   }
 
   ngOnInit(): void {
-    const newPage: number = this.route.snapshot.params['page'];
-    if (!(newPage === undefined || newPage === null)) {
-      this.page = newPage;
+    const newPageParam: number = this.route.snapshot.params['page'];
+    if (newPageParam !== null) {
+      const parsed = Number(newPageParam)
+      if (!Number.isNaN(parsed)) this.page = newPageParam;
     }
 
-    this.StorageBoxService.getStorageBoxes(this.entriesPerPage, this.page).pipe(take(1)).subscribe((value) => {
+    this.storageBoxService.getStorageBoxes(this.entriesPerPage, this.page).pipe(take(1)).subscribe((value) => {
       this.data = value;
     });
-    this.StorageBoxService.count().pipe(take(1)).subscribe((value) => {
+    this.storageBoxService.count().pipe(take(1)).subscribe((value) => {
       this.elementCount = value.count;
       this.table = value.table;
+    }, (error) => {
+      console.error('Failed to load storage box count:', error);
+      this.elementCount = 0;
     });
   }
 }

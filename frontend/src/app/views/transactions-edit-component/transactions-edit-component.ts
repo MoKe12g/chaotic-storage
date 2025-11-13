@@ -20,12 +20,10 @@ export class TransactionsEditComponent implements OnInit {
   constructor(private transactionService: TransactionService,
               private route: ActivatedRoute,
               private router: Router,) {
-    let date = new Date();
-    date.setDate(Date.now());
     this.transaction = new class implements Transaction {
       allocation_id: number = -1;
       item_delta: number = 0;
-      date: Date = date;
+      date: Date = new Date();
       id = -1;
     };
   }
@@ -55,7 +53,7 @@ export class TransactionsEditComponent implements OnInit {
     this.transactionService.postTransaction(this.transaction).pipe(take(1)).subscribe({
       error: (e) => alert(e.message),
       next: (response) => {
-        alert("HTTP Patch Request completed");
+        alert("HTTP POST Request completed");
         this.transaction = response;
         this.router.navigate(['/transaction/' + response.id])
           .then(r => {
@@ -65,7 +63,6 @@ export class TransactionsEditComponent implements OnInit {
           });
       },
     });
-    // TODO: this.transactionService.postTransaction()
   }
 
   patchTransaction() {
@@ -82,7 +79,7 @@ export class TransactionsEditComponent implements OnInit {
     this.transactionService.deleteTransaction(this.transaction.id).pipe(take(1)).subscribe({
       error: (e) => alert(e.message),
       next: (response) => {
-        alert("HTTP Patch Request completed");
+        alert("HTTP DELETE Request completed");
         this.router.navigate(['/transactions']).then(r => {
           if (!r) {
             alert("Redirection to transactions page didn't work.")

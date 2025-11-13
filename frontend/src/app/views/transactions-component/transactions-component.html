@@ -8,12 +8,12 @@
     <td>Item Delta</td>
     <td>Date</td>
   </tr>
-  @for (category of data; track category.id) {
+  @for (transaction of data; track transaction.id) {
     <tr>
-      <td><a routerLink="/category/{{ category.id }}">{{ category.id }}</a></td>
-      <td>{{ category.allocation_id }}</td>
-      <td>{{ category.item_delta }}</td>
-      <td>{{ category.date }}</td>
+      <td><a routerLink="/transaction/{{ transaction.id }}">{{ transaction.id }}</a></td>
+      <td>{{ transaction.allocation_id }}</td>
+      <td>{{ transaction.item_delta }}</td>
+      <td>{{ transaction.date }}</td>
     </tr>
   } @empty {
     No items available.

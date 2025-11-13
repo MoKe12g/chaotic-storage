@@ -1,7 +1,10 @@
 use chrono::NaiveDateTime;
 use serde::{self, Deserialize, Deserializer};
 
-const FORMATS: [&str; 2] = [
+
+// because typescript is not ok
+const FORMATS: [&str; 3] = [
+    "%Y-%m-%dT%H:%M:%S%.f",   // with fractional seconds
     "%Y-%m-%dT%H:%M",      // without seconds
     "%Y-%m-%dT%H:%M:%S",   // with seconds
 ];
@@ -16,5 +19,5 @@ where
             return Ok(dt);
         }
     }
-    Err(serde::de::Error::custom("invalid datetime format"))
+    Err(serde::de::Error::custom(format!("invalid datetime format. Expected one of: {:?}", FORMATS)))
 }

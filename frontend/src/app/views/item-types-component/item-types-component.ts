@@ -36,6 +36,9 @@ export class ItemTypesComponent implements OnInit {
     this.itemTypeService.count().pipe(take(1)).subscribe((value) => {
       this.elementCount = value.count;
       this.table = value.table;
+    }, (error) => {
+      console.error('Failed to load item-type count:', error);
+      this.elementCount = 0;
     });
   }
 }

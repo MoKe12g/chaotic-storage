@@ -25,9 +25,10 @@ export class CategoriesComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    const newPage: number = this.route.snapshot.params['page'];
-    if (!(newPage === undefined || newPage === null)) {
-      this.page = newPage;
+    const newPageParam: number = this.route.snapshot.params['page'];
+    if (newPageParam !== null) {
+      const parsed = Number(newPageParam)
+      if (!Number.isNaN(parsed)) this.page = newPageParam;
     }
 
     this.categoryService.getCategories(this.entriesPerPage, this.page).pipe(take(1)).subscribe((value) => {
@@ -36,6 +37,9 @@ export class CategoriesComponent implements OnInit {
     this.categoryService.count().pipe(take(1)).subscribe((value) => {
       this.elementCount = value.count;
       this.table = value.table;
+    }, (error) => {
+      console.error('Failed to load category count:', error);
+      this.elementCount = 0;
     });
   }
 }
