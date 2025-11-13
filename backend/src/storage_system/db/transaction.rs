@@ -34,7 +34,7 @@ impl Transaction {
         let result = sqlx::query!("INSERT INTO transactions (allocation_id, item_delta, date) VALUES (?1, ?2, ?3);",
         allocation_id, item_delta, date).execute(storage_system.get_database()).await?;
         let id = result.last_insert_rowid();
-        match Self::from(&storage_system, id).await {
+        match Self::from(storage_system, id).await {
             Ok(result) => {
                 match result {
                     Some(result) => { Ok(result) }

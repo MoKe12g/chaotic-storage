@@ -54,7 +54,8 @@ pub async fn patch_transaction(app_state: &State<api::AppStatePointer>, id: i64,
     let app_state = app_state.lock().await;
     let new_value = Transaction { id, allocation_id: input.allocation_id, item_delta: input.item_delta, date: input.date }; // make sure that the id is right inside the struct
     match new_value.update(app_state.get_storage_system()).await {
-        Ok(_) => { Ok(Json(new_value)) }
+        Ok(res) if res.rows_affected() > 0 => Ok(Json(new_value)),
+        Ok(_) => Err(BadRequest(Json(MessageResponse { message: "No rows updated".into() }))),
         Err(err) => { Err(BadRequest(Json(MessageResponse { message: err.to_string() + " from backend" }))) }
     }
 }
@@ -83,15 +84,10 @@ pub async fn delete_transaction(app_state: &State<api::AppStatePointer>, id: i64
 // TODO: Anzahl von erstellten Kategorien
 #[get("/count/transactions")]
 pub async fn count_transaction_entries(app_state: &State<api::AppStatePointer>) -> Result<Json<EntriesCountResponse>, BadRequest<Json<MessageResponse>>> {
-    let result = query_as!(EntriesCountResponse, "SELECT COUNT(id) AS count, 'transactions' AS 'table' FROM transactions;").fetch_optional(app_state.lock().await.get_storage_system().get_database()).await;
+    let result = query_as!(EntriesCountResponse, "SELECT COUNT(id) AS count, 'transactions' AS 'table' FROM transactions;").fetch_one(app_state.lock().await.get_storage_system().get_database()).await;
     match result {
-        Ok(result) => {
-            match result
-            {
-                None => { Err(BadRequest(Json(MessageResponse { message: "Backend couldn't answer the request".to_string() }))) }
-                Some(result) => Ok(Json(result))
+        Ok(result) => {Ok(Json(result))
             }
-        }
         Err(err) => { Err(BadRequest(Json(MessageResponse { message: err.to_string() + " from backend" }))) }
     }
 }

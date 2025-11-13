@@ -36,7 +36,7 @@ impl Allocation {
         let result = sqlx::query!("INSERT INTO allocations (description, date_of_entry, can_be_outside, category_id, storage_box_id) VALUES (?1, ?2, ?3, ?4, ?5);",
         description, date_of_entry, can_be_outside, category_id, storage_box_id).execute(storage_system.get_database()).await?;
         let id = result.last_insert_rowid();
-        match Self::from(&storage_system, id).await {
+        match Self::from(storage_system, id).await {
             Ok(result) => {
                 match result {
                     Some(result) => { Ok(result) }

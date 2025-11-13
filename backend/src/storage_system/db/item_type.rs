@@ -32,7 +32,7 @@ impl ItemType {
     pub async fn create(storage_system: &StorageSystem, storage_property: String) -> Result<Self, Box<dyn Error + Send + Sync>> {
         let result = sqlx::query!("INSERT INTO item_types (storage_property) VALUES (?1);", storage_property).execute(storage_system.get_database()).await?;
         let id = result.last_insert_rowid();
-        match Self::from(&storage_system, id).await {
+        match Self::from(storage_system, id).await {
             Ok(result) => {
                 match result {
                     Some(result) => { Ok(result) }

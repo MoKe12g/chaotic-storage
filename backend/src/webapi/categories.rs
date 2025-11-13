@@ -26,8 +26,8 @@ pub(crate) async fn get_category(app_state: &State<api::AppStatePointer>,
 #[get("/categories/<id>")]
 pub(crate) async fn get_category_by_id(app_state: &State<api::AppStatePointer>, id: i64) -> Option<Json<Category>> {
     let app_state = app_state.lock().await;
-    let category_from_id = Category::from(app_state.get_storage_system(), id).await;
-    match category_from_id {
+    let categorie_from_id = Category::from(app_state.get_storage_system(), id).await;
+    match categorie_from_id {
         Ok(category_from_id) => {
             category_from_id.map(Json)
         }
@@ -53,7 +53,8 @@ pub async fn patch_category(app_state: &State<api::AppStatePointer>, id: i64,
     let app_state = app_state.lock().await;
     let new_value = Category { id, comment: input.comment.clone() }; // make sure that the id is right inside the struct
     match new_value.update(app_state.get_storage_system()).await {
-        Ok(_) => { Ok(Json(new_value)) }
+        Ok(res) if res.rows_affected() > 0 => Ok(Json(new_value)),
+        Ok(_) => Err(BadRequest(Json(MessageResponse { message: "No rows updated".into() }))),
         Err(err) => { Err(BadRequest(Json(MessageResponse { message: err.to_string() + " from backend" }))) }
     }
 }
@@ -82,15 +83,10 @@ pub async fn delete_category(app_state: &State<api::AppStatePointer>, id: i64) -
 // TODO: Anzahl von erstellten Kategorien
 #[get("/count/categories")]
 pub async fn count_category_entries(app_state: &State<api::AppStatePointer>) -> Result<Json<EntriesCountResponse>, BadRequest<Json<MessageResponse>>> {
-    let result = query_as!(EntriesCountResponse, "SELECT COUNT(id) AS count, 'categories' AS 'table' FROM categories;").fetch_optional(app_state.lock().await.get_storage_system().get_database()).await;
-    match result {
-        Ok(result) => {
+    let result = query_as!(EntriesCountResponse, "SELECT COUNT(id) AS count, 'categories' AS 'table' FROM categories;").fetch_one(app_state.lock().await.get_storage_system().get_database()).await;
             match result
             {
-                None => { Err(BadRequest(Json(MessageResponse { message: "Backend couldn't answer the request".to_string() }))) }
-                Some(result) => Ok(Json(result))
+                Err(e) => { Err(BadRequest(Json(MessageResponse { message: e.to_string() }))) }
+                Ok(result) => Ok(Json(result))
             }
-        }
-        Err(err) => { Err(BadRequest(Json(MessageResponse { message: err.to_string() + " from backend" }))) }
-    }
 }
