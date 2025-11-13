@@ -13,8 +13,8 @@ pub(crate) async fn get_item_type(app_state: &State<api::AppStatePointer>,
     let app_state = app_state.lock().await;
     let limit = limit.unwrap_or(12);
     let page = page.unwrap_or(0);
-    let start = limit * page;
-    let end = limit * (page + 1) - 1;
+    let start = limit * page + 1;
+    let end = limit * (page + 1);
     match query_as!(ItemType, "SELECT * FROM item_types WHERE id BETWEEN ?1 AND ?2;", start, end).fetch_all(app_state.get_storage_system().get_database()).await {
         Ok(result) => {
             Ok(Json(result))

@@ -13,9 +13,9 @@ pub(crate) async fn get_allocation(app_state: &State<api::AppStatePointer>,
     let app_state = app_state.lock().await;
     let limit = limit.unwrap_or(12);
     let page = page.unwrap_or(0);
-    // TODO: sqlite starts the rowid with 1, means that the first page will have ony 11 items
-    let start = limit * page;
-    let end = limit * (page + 1) - 1;
+    // row_id in sqlite starts with 1, therefore the following pagination code is correct
+    let start = limit * page + 1;
+    let end = limit * (page + 1);
     match query_as!(Allocation, "SELECT * FROM allocations WHERE id BETWEEN ?1 AND ?2;", start, end).fetch_all(app_state.get_storage_system().get_database()).await {
         Ok(result) => {
             Ok(Json(result))
