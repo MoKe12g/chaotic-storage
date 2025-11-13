@@ -10,13 +10,16 @@ use sqlx::query_as;
 pub(crate) async fn get_allocation(app_state: &State<api::AppStatePointer>,
                                    limit: Option<i64>,
                                    page: Option<i64>) -> Result<Json<Vec<Allocation>>, BadRequest<Json<MessageResponse>>> {
-    let app_state = app_state.lock().await;
+    let storage_system = {
+        let app_state = app_state.lock().await;
+        app_state.get_storage_system().clone()
+    };
     let limit = limit.unwrap_or(12);
     let page = page.unwrap_or(0);
     // row_id in sqlite starts with 1, therefore the following pagination code is correct
     let start = limit * page + 1;
     let end = limit * (page + 1);
-    match query_as!(Allocation, "SELECT * FROM allocations WHERE id BETWEEN ?1 AND ?2;", start, end).fetch_all(app_state.get_storage_system().get_database()).await {
+    match query_as!(Allocation, "SELECT * FROM allocations WHERE id BETWEEN ?1 AND ?2;", start, end).fetch_all(storage_system.get_database()).await {
         Ok(result) => {
             Ok(Json(result))
         }
@@ -26,12 +29,16 @@ pub(crate) async fn get_allocation(app_state: &State<api::AppStatePointer>,
 
 #[get("/allocations/<id>")]
 pub(crate) async fn get_allocation_by_id(app_state: &State<api::AppStatePointer>, id: i64) -> Option<Json<Allocation>> {
-    let app_state = app_state.lock().await;
-    let allocation_from_id = Allocation::from(app_state.get_storage_system(), id).await;
+    let storage_system = {
+        let app_state = app_state.lock().await;
+        app_state.get_storage_system().clone()
+    };
+    let allocation_from_id = Allocation::from(&storage_system, id).await;
     match allocation_from_id {
         Ok(allocation_from_id) => {
             allocation_from_id.map(Json)
         }
+        // TODO: Log errors in all files
         Err(_) => None
     }
 }
@@ -39,10 +46,13 @@ pub(crate) async fn get_allocation_by_id(app_state: &State<api::AppStatePointer>
 /// creates entry
 #[post("/allocations", data = "<input>")]
 pub async fn post_allocation(app_state: &State<api::AppStatePointer>, input: Json<Allocation>) -> Result<Json<Allocation>, BadRequest<Json<MessageResponse>>> {
-    let app_state = app_state.lock().await;
+    let storage_system = {
+        let app_state = app_state.lock().await;
+        app_state.get_storage_system().clone()
+    };
     // TODO: Is there a better way than to just discard the given id?
     let input = input.into_inner();
-    match Allocation::create(app_state.get_storage_system(), input.description, input.date_of_entry, input.can_be_outside, input.category_id, input.storage_box_id).await {
+    match Allocation::create(&storage_system, input.description, input.date_of_entry, input.can_be_outside, input.category_id, input.storage_box_id).await {
         Ok(result) => { Ok(Json(result)) }
         Err(err) => { Err(BadRequest(Json(MessageResponse { message: err.to_string() + " from backend" }))) }
     }
@@ -52,9 +62,12 @@ pub async fn post_allocation(app_state: &State<api::AppStatePointer>, input: Jso
 #[patch("/allocations/<id>", data = "<input>")]
 pub async fn patch_allocation(app_state: &State<api::AppStatePointer>, id: i64,
                               input: Json<Allocation>) -> Result<Json<Allocation>, BadRequest<Json<MessageResponse>>> {
-    let app_state = app_state.lock().await;
+    let storage_system = {
+        let app_state = app_state.lock().await;
+        app_state.get_storage_system().clone()
+    };
     let new_value = Allocation { id, description: input.description.clone(), date_of_entry: input.date_of_entry, can_be_outside: input.can_be_outside, category_id: input.category_id, storage_box_id: input.storage_box_id }; // make sure that the id is right inside the struct
-    match new_value.update(app_state.get_storage_system()).await {
+    match new_value.update(&storage_system).await {
         Ok(res) if res.rows_affected() > 0 => Ok(Json(new_value)),
         Ok(_) => Err(BadRequest(Json(MessageResponse { message: "No rows updated".into() }))),
         Err(err) => { Err(BadRequest(Json(MessageResponse { message: err.to_string() + " from backend" }))) }
@@ -63,14 +76,17 @@ pub async fn patch_allocation(app_state: &State<api::AppStatePointer>, id: i64,
 
 #[delete("/allocations/<id>")]
 pub async fn delete_allocation(app_state: &State<api::AppStatePointer>, id: i64) -> Result<Json<Allocation>, BadRequest<Json<MessageResponse>>> {
-    let app_state = app_state.lock().await;
-    match Allocation::from(app_state.get_storage_system(), id).await {
+    let storage_system = {
+                let app_state = app_state.lock().await;
+            app_state.get_storage_system().clone()
+        };
+    match Allocation::from(&storage_system, id).await {
         Ok(result) => {
             match result {
                 None => { Err(BadRequest(Json(MessageResponse { message: "Cannot find element".to_string() }))) } // BadRequest(Json(MessageResponse { message: "Cannot find id ".to_owned() + &*id.to_string() })))}
                 Some(result2) => {
                     let allocation = result2.clone();
-                    match result2.delete(app_state.get_storage_system()).await {
+                    match result2.delete(&storage_system).await {
                         Ok(_) => { Ok(Json(allocation)) }
                         Err(err) => Err(BadRequest(Json(MessageResponse { message: err.to_string() + " from backend" })))
                     }
@@ -85,7 +101,11 @@ pub async fn delete_allocation(app_state: &State<api::AppStatePointer>, id: i64)
 // TODO: Anzahl von erstellten Kategorien
 #[get("/count/allocations")]
 pub async fn count_allocation_entries(app_state: &State<api::AppStatePointer>) -> Result<Json<EntriesCountResponse>, BadRequest<Json<MessageResponse>>> {
-    let result = query_as!(EntriesCountResponse, "SELECT COUNT(id) AS count, 'allocations' AS 'table' FROM allocations;").fetch_one(app_state.lock().await.get_storage_system().get_database()).await;
+    let storage_system = {
+        let app_state = app_state.lock().await;
+        app_state.get_storage_system().clone()
+    };
+    let result = query_as!(EntriesCountResponse, "SELECT COUNT(id) AS count, 'allocations' AS 'table' FROM allocations;").fetch_one(storage_system.get_database()).await;
     match result {
         Ok(result) => {
             Ok(Json(result))

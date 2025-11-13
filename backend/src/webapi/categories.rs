@@ -10,12 +10,15 @@ use sqlx::query_as;
 pub(crate) async fn get_category(app_state: &State<api::AppStatePointer>,
                                  limit: Option<i64>,
                                  page: Option<i64>) -> Result<Json<Vec<Category>>, BadRequest<Json<MessageResponse>>> {
-    let app_state = app_state.lock().await;
+    let storage_system = {
+        let app_state = app_state.lock().await;
+        app_state.get_storage_system().clone()
+    };
     let limit = limit.unwrap_or(12);
     let page = page.unwrap_or(0);
     let start = limit * page + 1;
     let end = limit * (page + 1);
-    match query_as!(Category, "SELECT * FROM categories WHERE id BETWEEN ?1 AND ?2;", start, end).fetch_all(app_state.get_storage_system().get_database()).await {
+    match query_as!(Category, "SELECT * FROM categories WHERE id BETWEEN ?1 AND ?2;", start, end).fetch_all(storage_system.get_database()).await {
         Ok(result) => {
             Ok(Json(result))
         }
@@ -25,8 +28,11 @@ pub(crate) async fn get_category(app_state: &State<api::AppStatePointer>,
 
 #[get("/categories/<id>")]
 pub(crate) async fn get_category_by_id(app_state: &State<api::AppStatePointer>, id: i64) -> Option<Json<Category>> {
-    let app_state = app_state.lock().await;
-    let categorie_from_id = Category::from(app_state.get_storage_system(), id).await;
+    let storage_system = {
+        let app_state = app_state.lock().await;
+        app_state.get_storage_system().clone()
+    };
+    let categorie_from_id = Category::from(&storage_system, id).await;
     match categorie_from_id {
         Ok(category_from_id) => {
             category_from_id.map(Json)
@@ -38,9 +44,12 @@ pub(crate) async fn get_category_by_id(app_state: &State<api::AppStatePointer>, 
 /// creates entry
 #[post("/categories", data = "<input>")]
 pub async fn post_category(app_state: &State<api::AppStatePointer>, input: Json<Category>) -> Result<Json<Category>, BadRequest<Json<MessageResponse>>> {
-    let app_state = app_state.lock().await;
+    let storage_system = {
+        let app_state = app_state.lock().await;
+        app_state.get_storage_system().clone()
+    };
     // TODO: Is there a better way than to just discard the given id?
-    match Category::create(app_state.get_storage_system(), input.into_inner().comment).await {
+    match Category::create(&storage_system, input.into_inner().comment).await {
         Ok(result) => { Ok(Json(result)) }
         Err(err) => { Err(BadRequest(Json(MessageResponse { message: err.to_string() + " from backend" }))) }
     }
@@ -50,9 +59,12 @@ pub async fn post_category(app_state: &State<api::AppStatePointer>, input: Json<
 #[patch("/categories/<id>", data = "<input>")]
 pub async fn patch_category(app_state: &State<api::AppStatePointer>, id: i64,
                             input: Json<Category>) -> Result<Json<Category>, BadRequest<Json<MessageResponse>>> {
-    let app_state = app_state.lock().await;
+    let storage_system = {
+        let app_state = app_state.lock().await;
+        app_state.get_storage_system().clone()
+    };
     let new_value = Category { id, comment: input.comment.clone() }; // make sure that the id is right inside the struct
-    match new_value.update(app_state.get_storage_system()).await {
+    match new_value.update(&storage_system).await {
         Ok(res) if res.rows_affected() > 0 => Ok(Json(new_value)),
         Ok(_) => Err(BadRequest(Json(MessageResponse { message: "No rows updated".into() }))),
         Err(err) => { Err(BadRequest(Json(MessageResponse { message: err.to_string() + " from backend" }))) }
@@ -61,14 +73,17 @@ pub async fn patch_category(app_state: &State<api::AppStatePointer>, id: i64,
 
 #[delete("/categories/<id>")]
 pub async fn delete_category(app_state: &State<api::AppStatePointer>, id: i64) -> Result<Json<Category>, BadRequest<Json<MessageResponse>>> {
-    let app_state = app_state.lock().await;
-    match Category::from(app_state.get_storage_system(), id).await {
+    let storage_system = {
+        let app_state = app_state.lock().await;
+        app_state.get_storage_system().clone()
+    };
+    match Category::from(&storage_system, id).await {
         Ok(result) => {
             match result {
                 None => { Err(BadRequest(Json(MessageResponse { message: "Cannot find element".to_string() }))) } // BadRequest(Json(MessageResponse { message: "Cannot find id ".to_owned() + &*id.to_string() })))}
                 Some(result2) => {
                     let category = result2.clone();
-                    match result2.delete(app_state.get_storage_system()).await {
+                    match result2.delete(&storage_system).await {
                         Ok(_) => { Ok(Json(category)) }
                         Err(err) => Err(BadRequest(Json(MessageResponse { message: err.to_string() + " from backend" })))
                     }
@@ -83,7 +98,11 @@ pub async fn delete_category(app_state: &State<api::AppStatePointer>, id: i64) -
 // TODO: Anzahl von erstellten Kategorien
 #[get("/count/categories")]
 pub async fn count_category_entries(app_state: &State<api::AppStatePointer>) -> Result<Json<EntriesCountResponse>, BadRequest<Json<MessageResponse>>> {
-    let result = query_as!(EntriesCountResponse, "SELECT COUNT(id) AS count, 'categories' AS 'table' FROM categories;").fetch_one(app_state.lock().await.get_storage_system().get_database()).await;
+    let storage_system = {
+        let app_state = app_state.lock().await;
+        app_state.get_storage_system().clone()
+    };
+    let result = query_as!(EntriesCountResponse, "SELECT COUNT(id) AS count, 'categories' AS 'table' FROM categories;").fetch_one(storage_system.get_database()).await;
             match result
             {
                 Err(e) => { Err(BadRequest(Json(MessageResponse { message: e.to_string() }))) }
