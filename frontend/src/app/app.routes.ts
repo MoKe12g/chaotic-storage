@@ -14,19 +14,24 @@ import {TransactionsEditComponent} from './views/transactions-edit-component/tra
 export const routes: Routes = [
   {path: '', redirectTo: '/dashboard', pathMatch: 'full'},
   {path: 'dashboard', component: DashboardComponent},
+  // storage box
+  {path: 'storage-box/:id', component: StorageBoxesEditComponent},
   {path: 'storage-boxes', component: StorageBoxesComponent},
   {path: 'storage-boxes/:page', component: StorageBoxesComponent},
+  // category
+  {path: 'category/:id', component: CategoriesEditComponent},
   {path: 'categories', component: CategoriesComponent},
   {path: 'categories/:page', component: CategoriesComponent},
+  // allocation
+  {path: 'allocation/:id', component: AllocationsEditComponent},
   {path: 'allocations', component: AllocationsComponent},
   {path: 'allocations/:page', component: AllocationsComponent},
+  // transaction
+  {path: 'transaction/:id', component: TransactionsEditComponent},
   {path: 'transactions', component: TransactionsComponent},
   {path: 'transactions/:page', component: TransactionsComponent},
+  // item-type
+  {path: 'item-type/:id', component: ItemTypesEditComponent},
   {path: 'item-types', component: ItemTypesComponent},
   {path: 'item-types/:page', component: ItemTypesComponent},
-  {path: 'storage-box/:id', component: StorageBoxesEditComponent},
-  {path: 'category/:id', component: CategoriesEditComponent},
-  {path: 'allocation/:id', component: AllocationsEditComponent},
-  {path: 'transaction/:id', component: TransactionsEditComponent},
-  {path: 'item-type/:id', component: ItemTypesEditComponent},
 ];
