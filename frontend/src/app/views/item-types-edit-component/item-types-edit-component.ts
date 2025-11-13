@@ -1,5 +1,4 @@
 import {Component} from '@angular/core';
-import {CategoryService} from '../../services/category-service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {take} from 'rxjs';
 import {FormsModule} from '@angular/forms';
