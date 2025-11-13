@@ -25,10 +25,10 @@ export class CategoriesComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    const newPageParam: number = this.route.snapshot.params['page'];
+    const newPageParam = this.route.snapshot.params['page'];
     if (newPageParam !== null) {
       const parsed = Number(newPageParam)
-      if (!Number.isNaN(parsed)) this.page = newPageParam;
+      if (!Number.isNaN(parsed)) this.page = parsed;
     }
 
     this.categoryService.getCategories(this.entriesPerPage, this.page).pipe(take(1)).subscribe((value) => {
