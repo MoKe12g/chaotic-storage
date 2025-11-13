@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {CategoryService} from '../../services/category-service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Category} from '../../relations/category';
@@ -13,7 +13,7 @@ import {FormsModule} from '@angular/forms';
   templateUrl: './categories-edit-component.html',
   styleUrl: './categories-edit-component.css'
 })
-export class CategoriesEditComponent {
+export class CategoriesEditComponent implements OnInit {
   categoryId: number = -1;
   category: Category;
 

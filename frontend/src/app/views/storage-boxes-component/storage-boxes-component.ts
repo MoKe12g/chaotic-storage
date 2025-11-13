@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, RouterLink} from '@angular/router';
 import {take} from 'rxjs';
 import {StorageBox} from '../../relations/storage-box';
@@ -12,7 +12,7 @@ import {StorageBoxService} from '../../services/storage-box-service';
   templateUrl: './storage-boxes-component.html',
   styleUrl: './storage-boxes-component.css'
 })
-export class StorageBoxesComponent {
+export class StorageBoxesComponent implements OnInit {
   data: StorageBox[] = [];
   elementCount: number = -1;
   table: string = "no-table";

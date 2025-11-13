@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, RouterLink} from '@angular/router';
 import {take} from 'rxjs';
 import {Allocation} from '../../relations/allocation';
@@ -12,7 +12,7 @@ import {AllocationService} from '../../services/allocation-service';
   templateUrl: './allocations-component.html',
   styleUrl: './allocations-component.css'
 })
-export class AllocationsComponent {
+export class AllocationsComponent implements OnInit {
   data: Allocation[] = [];
   elementCount: number = -1;
   table: string = "no-table";

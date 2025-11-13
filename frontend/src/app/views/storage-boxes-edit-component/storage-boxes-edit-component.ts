@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
 import {take} from 'rxjs';
@@ -13,7 +13,7 @@ import {StorageBoxService} from '../../services/storage-box-service';
   templateUrl: './storage-boxes-edit-component.html',
   styleUrl: './storage-boxes-edit-component.css'
 })
-export class StorageBoxesEditComponent {
+export class StorageBoxesEditComponent implements OnInit {
   storageBoxId: number = -1;
   storageBox: StorageBox;
 

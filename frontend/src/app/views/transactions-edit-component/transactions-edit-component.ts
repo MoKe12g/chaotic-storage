@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {Transaction} from '../../relations/transaction';
 import {TransactionService} from '../../services/transaction-service';
@@ -13,7 +13,7 @@ import {take} from 'rxjs';
   templateUrl: './transactions-edit-component.html',
   styleUrl: './transactions-edit-component.css'
 })
-export class TransactionsEditComponent {
+export class TransactionsEditComponent implements OnInit {
   transactionId: number = -1;
   transaction: Transaction;
 

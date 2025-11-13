@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {CategoryService} from '../../services/category-service';
 import {EntriesCount} from '../../returns/entries-count';
 import {take} from 'rxjs';
@@ -13,7 +13,7 @@ import {TransactionService} from '../../services/transaction-service';
   templateUrl: './dashboard-component.html',
   styleUrl: './dashboard-component.css'
 })
-export class DashboardComponent {
+export class DashboardComponent implements OnInit {
   protected categoryCount: number = -1;
   protected itemTypeCount: number = -1;
   protected storageBoxCount: number = -1;

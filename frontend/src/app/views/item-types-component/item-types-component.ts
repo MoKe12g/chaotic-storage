@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, RouterLink} from '@angular/router';
 import {take} from 'rxjs';
 import {ItemType} from '../../relations/item-type';
@@ -12,7 +12,7 @@ import {ItemTypeService} from '../../services/item-type-service';
   templateUrl: './item-types-component.html',
   styleUrl: './item-types-component.css'
 })
-export class ItemTypesComponent {
+export class ItemTypesComponent implements OnInit {
   data: ItemType[] = [];
   elementCount: number = -1;
   table: string = "no-table";

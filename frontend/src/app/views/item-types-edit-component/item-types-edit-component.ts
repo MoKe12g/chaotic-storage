@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {take} from 'rxjs';
 import {FormsModule} from '@angular/forms';
@@ -13,7 +13,7 @@ import {ItemTypeService} from '../../services/item-type-service';
   templateUrl: './item-types-edit-component.html',
   styleUrl: './item-types-edit-component.css'
 })
-export class ItemTypesEditComponent {
+export class ItemTypesEditComponent implements OnInit {
   itemTypeId: number = -1;
   itemType: ItemType;
 

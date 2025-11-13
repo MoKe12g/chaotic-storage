@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
 import {take} from 'rxjs';
@@ -13,7 +13,7 @@ import {AllocationService} from '../../services/allocation-service';
   templateUrl: './allocations-edit-component.html',
   styleUrl: './allocations-edit-component.css'
 })
-export class AllocationsEditComponent {
+export class AllocationsEditComponent implements OnInit {
   allocationId: number = -1;
   allocation: Allocation;
 

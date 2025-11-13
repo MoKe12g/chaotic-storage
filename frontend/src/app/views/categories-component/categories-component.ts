@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {CategoryService} from '../../services/category-service';
 import {Category} from '../../relations/category';
 import {take} from 'rxjs';
@@ -12,7 +12,7 @@ import {ActivatedRoute, RouterLink} from '@angular/router';
   templateUrl: './categories-component.html',
   styleUrl: './categories-component.css'
 })
-export class CategoriesComponent {
+export class CategoriesComponent implements OnInit {
   data: Category[] = [];
   elementCount: number = -1;
   table: string = "no-table";
