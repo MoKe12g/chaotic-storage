@@ -1,7 +1,7 @@
 use rocket::serde::{Deserialize, Serialize};
 use rocket::Responder;
 
-#[derive(Responder, Debug, Deserialize, Serialize)]
+#[derive(Debug, Responder, Deserialize, Serialize)]
 pub struct MessageResponse {
     /// This is a message from the server.
     pub message: String,
