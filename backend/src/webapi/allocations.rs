@@ -77,9 +77,9 @@ pub async fn patch_allocation(app_state: &State<api::AppStatePointer>, id: i64,
 #[delete("/allocations/<id>")]
 pub async fn delete_allocation(app_state: &State<api::AppStatePointer>, id: i64) -> Result<Json<Allocation>, BadRequest<Json<MessageResponse>>> {
     let storage_system = {
-                let app_state = app_state.lock().await;
-            app_state.get_storage_system().clone()
-        };
+        let app_state = app_state.lock().await;
+        app_state.get_storage_system().clone()
+    };
     match Allocation::from(&storage_system, id).await {
         Ok(result) => {
             match result {

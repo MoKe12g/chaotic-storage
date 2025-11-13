@@ -105,8 +105,9 @@ pub async fn count_transaction_entries(app_state: &State<api::AppStatePointer>) 
     };
     let result = query_as!(EntriesCountResponse, "SELECT COUNT(id) AS count, 'transactions' AS 'table' FROM transactions;").fetch_one(storage_system.get_database()).await;
     match result {
-        Ok(result) => {Ok(Json(result))
-            }
+        Ok(result) => {
+            Ok(Json(result))
+        }
         Err(err) => { Err(BadRequest(Json(MessageResponse { message: err.to_string() + " from backend" }))) }
     }
 }

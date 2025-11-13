@@ -103,9 +103,9 @@ pub async fn count_category_entries(app_state: &State<api::AppStatePointer>) -> 
         app_state.get_storage_system().clone()
     };
     let result = query_as!(EntriesCountResponse, "SELECT COUNT(id) AS count, 'categories' AS 'table' FROM categories;").fetch_one(storage_system.get_database()).await;
-            match result
-            {
-                Err(e) => { Err(BadRequest(Json(MessageResponse { message: e.to_string() }))) }
-                Ok(result) => Ok(Json(result))
-            }
+    match result
+    {
+        Err(e) => { Err(BadRequest(Json(MessageResponse { message: e.to_string() }))) }
+        Ok(result) => Ok(Json(result))
+    }
 }
