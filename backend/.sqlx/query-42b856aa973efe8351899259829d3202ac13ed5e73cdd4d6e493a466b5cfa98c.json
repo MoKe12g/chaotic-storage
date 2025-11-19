@@ -1,6 +1,6 @@
 {
   "db_name": "SQLite",
-  "query": "SELECT * FROM transactions WHERE id BETWEEN ?1 AND ?2;",
+  "query": "SELECT *\n        FROM storage_boxes\n        WHERE id BETWEEN ? AND ?\n        ORDER BY ID ASC;",
   "describe": {
     "columns": [
       {
@@ -9,19 +9,14 @@
         "type_info": "Integer"
       },
       {
-        "name": "allocation_id",
+        "name": "place",
         "ordinal": 1,
-        "type_info": "Integer"
+        "type_info": "Text"
       },
       {
-        "name": "item_delta",
+        "name": "item_type",
         "ordinal": 2,
         "type_info": "Integer"
-      },
-      {
-        "name": "date",
-        "ordinal": 3,
-        "type_info": "Datetime"
       }
     ],
     "parameters": {
@@ -30,9 +25,8 @@
     "nullable": [
       false,
       false,
-      false,
       false
     ]
   },
-  "hash": "1e448f524a5ddfc4c7723c923f965940cbbdb0c573991a35d5a4ecccb8202872"
+  "hash": "42b856aa973efe8351899259829d3202ac13ed5e73cdd4d6e493a466b5cfa98c"
 }
