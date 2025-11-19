@@ -5,6 +5,7 @@ use rocket::response::status::BadRequest;
 use rocket::serde::json::Json;
 use rocket::{delete, get, patch, post, State};
 use sqlx::query_as;
+use sqlx_conditional_queries::conditional_query_as;
 
 #[get("/transactions?<limit>&<page>")]
 pub(crate) async fn get_transaction(app_state: &State<api::AppStatePointer>,
@@ -14,11 +15,23 @@ pub(crate) async fn get_transaction(app_state: &State<api::AppStatePointer>,
         let app_state = app_state.lock().await;
         app_state.get_storage_system().clone()
     };
-    let limit = limit.unwrap_or(12);
-    let page = page.unwrap_or(0);
-    let start = limit * page + 1;
-    let end = limit * (page + 1);
-    match query_as!(Transaction, "SELECT * FROM transactions WHERE id BETWEEN ?1 AND ?2;", start, end).fetch_all(storage_system.get_database()).await {
+
+    // calculate pagination
+    let new_page = page.unwrap_or(0);
+    let new_limit = limit.unwrap_or(64);
+    let start = new_limit * new_page + 1;
+    let end = new_limit * (new_page + 1);
+
+    match conditional_query_as!(Transaction,
+        r#"SELECT *
+        FROM transactions
+        {#pagination};"#,
+        #pagination = match limit {
+            Some(_) =>
+                "WHERE id BETWEEN {start} AND {end}",
+            None => "",
+        },
+    ).fetch_all(storage_system.get_database()).await {
         Ok(result) => {
             Ok(Json(result))
         }

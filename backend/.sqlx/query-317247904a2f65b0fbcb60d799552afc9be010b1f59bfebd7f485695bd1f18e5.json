@@ -1,6 +1,6 @@
 {
   "db_name": "SQLite",
-  "query": "SELECT * FROM item_types WHERE id BETWEEN ?1 AND ?2;",
+  "query": "SELECT *\n        FROM item_types\n        WHERE id BETWEEN ? AND ?;",
   "describe": {
     "columns": [
       {
@@ -22,5 +22,5 @@
       false
     ]
   },
-  "hash": "48258466fd5b84153f399a2e189ab1c6686e51b79796222190bf2967b96912aa"
+  "hash": "317247904a2f65b0fbcb60d799552afc9be010b1f59bfebd7f485695bd1f18e5"
 }

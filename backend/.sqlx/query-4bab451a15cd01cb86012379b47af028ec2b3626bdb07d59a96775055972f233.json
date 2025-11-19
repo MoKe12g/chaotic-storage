@@ -1,6 +1,6 @@
 {
   "db_name": "SQLite",
-  "query": "SELECT * FROM storage_boxes WHERE id BETWEEN ?1 AND ?2;",
+  "query": "SELECT *\n        FROM item_types\n        ;",
   "describe": {
     "columns": [
       {
@@ -9,24 +9,18 @@
         "type_info": "Integer"
       },
       {
-        "name": "place",
+        "name": "storage_property",
         "ordinal": 1,
         "type_info": "Text"
-      },
-      {
-        "name": "item_type",
-        "ordinal": 2,
-        "type_info": "Integer"
       }
     ],
     "parameters": {
-      "Right": 2
+      "Right": 0
     },
     "nullable": [
-      false,
       false,
       false
     ]
   },
-  "hash": "a969cbcd8b6d8608f69484b36d82a4a2e6e42762f9f06d4163ef437fed518d3d"
+  "hash": "4bab451a15cd01cb86012379b47af028ec2b3626bdb07d59a96775055972f233"
 }

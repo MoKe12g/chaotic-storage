@@ -1,0 +1,32 @@
+{
+  "db_name": "SQLite",
+  "query": "SELECT *\n        FROM storage_boxes\n        ;",
+  "describe": {
+    "columns": [
+      {
+        "name": "id",
+        "ordinal": 0,
+        "type_info": "Integer"
+      },
+      {
+        "name": "place",
+        "ordinal": 1,
+        "type_info": "Text"
+      },
+      {
+        "name": "item_type",
+        "ordinal": 2,
+        "type_info": "Integer"
+      }
+    ],
+    "parameters": {
+      "Right": 0
+    },
+    "nullable": [
+      false,
+      false,
+      false
+    ]
+  },
+  "hash": "13afa5878a392cb9969e764f6c8de40d131f14ccdc068a0a6f2c78a97981a9a7"
+}
