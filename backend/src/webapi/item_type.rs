@@ -25,7 +25,8 @@ pub(crate) async fn get_item_type(app_state: &State<api::AppStatePointer>,
     match conditional_query_as!(ItemType,
         r#"SELECT *
         FROM item_types
-        {#pagination};"#,
+        {#pagination}
+        ORDER BY ID ASC;"#,
         #pagination = match limit {
             Some(_) =>
                 "WHERE id BETWEEN {start} AND {end}",

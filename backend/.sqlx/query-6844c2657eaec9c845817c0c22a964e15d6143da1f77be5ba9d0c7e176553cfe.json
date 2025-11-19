@@ -1,6 +1,6 @@
 {
   "db_name": "SQLite",
-  "query": "SELECT *\n        FROM transactions\n        ;",
+  "query": "SELECT *\n        FROM transactions\n        \n        ORDER BY ID ASC;",
   "describe": {
     "columns": [
       {
@@ -34,5 +34,5 @@
       false
     ]
   },
-  "hash": "649316a6d2753b43cf86c42debc9436ff9500762f3a59805f68fa4c8544d8262"
+  "hash": "6844c2657eaec9c845817c0c22a964e15d6143da1f77be5ba9d0c7e176553cfe"
 }

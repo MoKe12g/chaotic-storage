@@ -1,6 +1,6 @@
 {
   "db_name": "SQLite",
-  "query": "SELECT *\n        FROM item_types\n        ;",
+  "query": "SELECT *\n        FROM item_types\n        WHERE id BETWEEN ? AND ?\n        ORDER BY ID ASC;",
   "describe": {
     "columns": [
       {
@@ -15,12 +15,12 @@
       }
     ],
     "parameters": {
-      "Right": 0
+      "Right": 2
     },
     "nullable": [
       false,
       false
     ]
   },
-  "hash": "4bab451a15cd01cb86012379b47af028ec2b3626bdb07d59a96775055972f233"
+  "hash": "ce6740691de413a2a05f593c3fe734c2a21ea175cc8331c7eb8e07022f0f199d"
 }

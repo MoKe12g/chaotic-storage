@@ -1,6 +1,6 @@
 {
   "db_name": "SQLite",
-  "query": "SELECT *\n        FROM transactions\n        WHERE id BETWEEN ? AND ?;",
+  "query": "SELECT *\n        FROM transactions\n        WHERE id BETWEEN ? AND ?\n        ORDER BY ID ASC;",
   "describe": {
     "columns": [
       {
@@ -34,5 +34,5 @@
       false
     ]
   },
-  "hash": "5b86932accb23ef31aa6214de5f72b084d356b50d161a673b125b3015ec09b79"
+  "hash": "4fba58a73d67a3af5ed62cf7bdf9eb345e2a22228e5157b9757401f73f28d2f4"
 }

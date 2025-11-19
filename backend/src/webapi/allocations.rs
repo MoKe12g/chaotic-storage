@@ -25,7 +25,8 @@ pub(crate) async fn get_allocation(app_state: &State<api::AppStatePointer>,
     match conditional_query_as!(Allocation,
         r#"SELECT *
         FROM allocations
-        {#pagination};"#,
+        {#pagination}
+        ORDER BY ID ASC;"#,
         #pagination = match limit {
             Some(_) =>
                 "WHERE id BETWEEN {start} AND {end}",

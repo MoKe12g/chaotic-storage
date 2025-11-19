@@ -1,6 +1,6 @@
 {
   "db_name": "SQLite",
-  "query": "SELECT *\n        FROM allocations\n        WHERE id BETWEEN ? AND ?;",
+  "query": "SELECT *\n        FROM allocations\n        \n        ORDER BY ID ASC;",
   "describe": {
     "columns": [
       {
@@ -35,7 +35,7 @@
       }
     ],
     "parameters": {
-      "Right": 2
+      "Right": 0
     },
     "nullable": [
       false,
@@ -46,5 +46,5 @@
       false
     ]
   },
-  "hash": "e337a4ec5d757ef330b66f33d18d6a5c54c1732f8ed19a0d5083f4c616f16d73"
+  "hash": "fc4789f282d8447b7893e66f1da5d8d6eb0cd2f24d89ee5498073bc8d5f922d8"
 }

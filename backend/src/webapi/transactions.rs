@@ -25,7 +25,8 @@ pub(crate) async fn get_transaction(app_state: &State<api::AppStatePointer>,
     match conditional_query_as!(Transaction,
         r#"SELECT *
         FROM transactions
-        {#pagination};"#,
+        {#pagination}
+        ORDER BY ID ASC;"#,
         #pagination = match limit {
             Some(_) =>
                 "WHERE id BETWEEN {start} AND {end}",

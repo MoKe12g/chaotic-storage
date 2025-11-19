@@ -25,7 +25,8 @@ pub(crate) async fn get_storage_box(app_state: &State<api::AppStatePointer>,
     match conditional_query_as!(StorageBox,
         r#"SELECT *
         FROM storage_boxes
-        {#pagination};"#,
+        {#pagination}
+        ORDER BY ID ASC;"#,
         #pagination = match limit {
             Some(_) =>
                 "WHERE id BETWEEN {start} AND {end}",

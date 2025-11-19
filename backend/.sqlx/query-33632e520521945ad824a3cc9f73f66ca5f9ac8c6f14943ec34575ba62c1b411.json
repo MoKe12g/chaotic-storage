@@ -1,6 +1,6 @@
 {
   "db_name": "SQLite",
-  "query": "SELECT *\n        FROM storage_boxes\n        ;",
+  "query": "SELECT *\n        FROM storage_boxes\n        \n        ORDER BY ID ASC;",
   "describe": {
     "columns": [
       {
@@ -28,5 +28,5 @@
       false
     ]
   },
-  "hash": "13afa5878a392cb9969e764f6c8de40d131f14ccdc068a0a6f2c78a97981a9a7"
+  "hash": "33632e520521945ad824a3cc9f73f66ca5f9ac8c6f14943ec34575ba62c1b411"
 }
