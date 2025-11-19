@@ -1,4 +1,3 @@
-use chrono::NaiveDateTime;
 use crate::models::allocations::Allocation;
 use crate::models::response::{EntriesCountResponse, MessageResponse};
 use crate::webapi::api;
@@ -9,13 +8,15 @@ use sqlx::query_as;
 use sqlx_conditional_queries::conditional_query_as;
 
 #[get("/allocations?<limit>&<page>&<storage_box_id>&<can_be_outside>&<category_id>&<description>")]
-pub(crate) async fn get_allocation(app_state: &State<api::AppStatePointer>,
-                                   limit: Option<i64>,
-                                   page: Option<i64>,
-                                   storage_box_id:Option<i64>,
-                                   can_be_outside: Option<bool>,
-                                   category_id:Option<i64>,
-                                   description:Option<i64>) -> Result<Json<Vec<Allocation>>, BadRequest<Json<MessageResponse>>> {
+pub(crate) async fn get_allocation(
+    app_state: &State<api::AppStatePointer>,
+    limit: Option<i64>,
+    page: Option<i64>,
+    storage_box_id: Option<i64>,
+    can_be_outside: Option<bool>,
+    category_id: Option<i64>,
+    description: Option<String>,
+) -> Result<Json<Vec<Allocation>>, BadRequest<Json<MessageResponse>>> {
     let storage_system = {
         let app_state = app_state.lock().await;
         app_state.get_storage_system().clone()
@@ -52,7 +53,7 @@ pub(crate) async fn get_allocation(app_state: &State<api::AppStatePointer>,
             "AND category_id = {category_id}",
             None => "",
         },
-        #description = match description {
+        #description = match description.clone() {
             Some(_) =>
             "AND description = {description}",
             None => "",
