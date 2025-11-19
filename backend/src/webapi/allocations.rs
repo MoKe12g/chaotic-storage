@@ -61,7 +61,7 @@ pub(crate) async fn get_allocation(
             "AND category_id = {category_id}",
             None => "",
         },
-        #description = match description.clone() {
+        #description = match description.as_ref() {
             Some(_) =>
             "AND description = {description}",
             None => "",
