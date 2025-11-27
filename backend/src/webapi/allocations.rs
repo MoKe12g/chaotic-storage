@@ -66,7 +66,7 @@ pub(crate) async fn get_allocation(app_state: &State<api::AppState>,
 }
 
 #[get("/allocations/<id>")]
-pub(crate) async fn get_allocation_by_id(app_state: &State<api::AppState>, id: i64) -> Option<Json<Allocation>> {
+pub(crate) async fn get_allocation_by_id(app_state: &State<api::AppState>, id: i64) -> Result<Json<Allocation>,BadRequest<Json<MessageResponse>>> {
     let storage_system = app_state.get_storage_system();
     let allocation_from_id = Allocation::from(storage_system, id).await;
     match allocation_from_id {
