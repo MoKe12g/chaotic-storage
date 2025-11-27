@@ -71,10 +71,12 @@ pub(crate) async fn get_allocation_by_id(app_state: &State<api::AppState>, id: i
     let allocation_from_id = Allocation::from(storage_system, id).await;
     match allocation_from_id {
         Ok(allocation_from_id) => {
-            allocation_from_id.map(Json)
-        }
-        // TODO: Log errors in all files
-        Err(_) => None
+            match allocation_from_id{
+                Some(allocation_from_id) => {Ok(Json(allocation_from_id))},
+                None => Err(BadRequest(Json(MessageResponse { message: "Backend returned no value".parse().unwrap() })))
+            }
+        },
+        Err(err) => Err(BadRequest(Json(MessageResponse { message: err.to_string() + " from backend" })))
     }
 }
 
@@ -124,7 +126,6 @@ pub async fn delete_allocation(app_state: &State<api::AppState>, id: i64) -> Res
 }
 
 // misc
-// TODO: Anzahl von erstellten Kategorien
 #[get("/count/allocations")]
 pub async fn count_allocation_entries(app_state: &State<api::AppState>) -> Result<Json<EntriesCountResponse>, BadRequest<Json<MessageResponse>>> {
     let storage_system = app_state.get_storage_system();
