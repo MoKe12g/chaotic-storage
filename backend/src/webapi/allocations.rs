@@ -113,6 +113,7 @@ pub async fn delete_allocation(app_state: &State<api::AppStatePointer>, id: i64)
 }
 
 // misc
+// TODO: Anzahl von erstellten Kategorien
 #[get("/count/allocations")]
 pub async fn count_allocation_entries(app_state: &State<api::AppStatePointer>) -> Result<Json<EntriesCountResponse>, BadRequest<Json<MessageResponse>>> {
     let storage_system = {
