@@ -41,7 +41,7 @@ pub(crate) async fn get_allocation(app_state: &State<api::AppStatePointer>,
 }
 
 #[get("/allocations/<id>")]
-pub(crate) async fn get_allocation_by_id(app_state: &State<api::AppState>, id: i64) -> Result<Json<Allocation>,BadRequest<Json<MessageResponse>>> {
+pub(crate) async fn get_allocation_by_id(app_state: &State<api::AppStatePointer>, id: i64) -> Result<Json<Allocation>,BadRequest<Json<MessageResponse>>> {
     let storage_system = {
         let app_state = app_state.lock().await;
         app_state.get_storage_system().clone()
