@@ -1,8 +1,6 @@
 use crate::storage_system::storage_system::StorageSystem;
 use crate::webapi::{allocations, categories, high_level, item_type, storage_boxes, transactions};
 use rocket::{routes, Error, Ignite, Rocket};
-use std::sync::Arc;
-use tokio::sync::Mutex;
 
 pub struct API
 {
@@ -16,8 +14,7 @@ impl API {
 
     pub(crate) async fn run(&self) -> anyhow::Result<Rocket<Ignite>, Error> {
         rocket::build()
-            .manage(AppState::new(self.storage_system.clone())
-            )
+            .manage(AppState { storage_system: self.storage_system.clone() })
             .mount(
                 "/",
                 routes![
@@ -64,17 +61,7 @@ pub struct AppState {
     storage_system: StorageSystem,
 }
 
-// Could be changed into State<StorageSystem> if no mutable value will be used
-pub type AppStatePointer = Arc<Mutex<AppState>>;
-
 impl AppState {
-    fn new(storage_system: StorageSystem) -> AppStatePointer {
-        let new_app_state = AppState {
-            storage_system
-        };
-        Arc::new(Mutex::new(new_app_state))
-    }
-
     pub fn get_storage_system(&self) -> &StorageSystem {
         &self.storage_system
     }

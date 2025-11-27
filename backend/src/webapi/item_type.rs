@@ -8,13 +8,10 @@ use sqlx::query_as;
 use sqlx_conditional_queries::conditional_query_as;
 
 #[get("/item_types?<limit>&<page>")]
-pub(crate) async fn get_item_type(app_state: &State<api::AppStatePointer>,
+pub(crate) async fn get_item_type(app_state: &State<api::AppState>,
                                   limit: Option<i64>,
                                   page: Option<i64>) -> Result<Json<Vec<ItemType>>, BadRequest<Json<MessageResponse>>> {
-    let storage_system = {
-        let app_state = app_state.lock().await;
-        app_state.get_storage_system().clone()
-    };
+    let storage_system = app_state.get_storage_system();
 
     // calculate pagination
     let new_page = page.unwrap_or(0);
@@ -41,12 +38,9 @@ pub(crate) async fn get_item_type(app_state: &State<api::AppStatePointer>,
 }
 
 #[get("/item_types/<id>")]
-pub(crate) async fn get_item_type_by_id(app_state: &State<api::AppStatePointer>, id: i64) -> Option<Json<ItemType>> {
-    let storage_system = {
-        let app_state = app_state.lock().await;
-        app_state.get_storage_system().clone()
-    };
-    let item_types_from_id = ItemType::from(&storage_system, id).await;
+pub(crate) async fn get_item_type_by_id(app_state: &State<api::AppState>, id: i64) -> Option<Json<ItemType>> {
+    let storage_system = app_state.get_storage_system();
+    let item_types_from_id = ItemType::from(storage_system, id).await;
     match item_types_from_id {
         Ok(item_types_from_id) => {
             item_types_from_id.map(Json)
@@ -57,13 +51,10 @@ pub(crate) async fn get_item_type_by_id(app_state: &State<api::AppStatePointer>,
 
 /// creates entry
 #[post("/item_types", data = "<input>")]
-pub async fn post_item_type(app_state: &State<api::AppStatePointer>, input: Json<ItemType>) -> Result<Json<ItemType>, BadRequest<Json<MessageResponse>>> {
-    let storage_system = {
-        let app_state = app_state.lock().await;
-        app_state.get_storage_system().clone()
-    };
+pub async fn post_item_type(app_state: &State<api::AppState>, input: Json<ItemType>) -> Result<Json<ItemType>, BadRequest<Json<MessageResponse>>> {
+    let storage_system = app_state.get_storage_system();
     // TODO: Is there a better way than to just discard the given id?
-    match ItemType::create(&storage_system, input.into_inner().storage_property).await {
+    match ItemType::create(storage_system, input.into_inner().storage_property).await {
         Ok(result) => { Ok(Json(result)) }
         Err(err) => { Err(BadRequest(Json(MessageResponse { message: err.to_string() + " from backend" }))) }
     }
@@ -71,12 +62,9 @@ pub async fn post_item_type(app_state: &State<api::AppStatePointer>, input: Json
 
 /// updates entry
 #[patch("/item_types/<id>", data = "<input>")]
-pub async fn patch_item_type(app_state: &State<api::AppStatePointer>, id: i64,
+pub async fn patch_item_type(app_state: &State<api::AppState>, id: i64,
                              input: Json<ItemType>) -> Result<Json<ItemType>, BadRequest<Json<MessageResponse>>> {
-    let storage_system = {
-        let app_state = app_state.lock().await;
-        app_state.get_storage_system().clone()
-    };
+    let storage_system = app_state.get_storage_system();
     let new_value = ItemType { id, storage_property: input.storage_property.clone() }; // make sure that the id is right inside the struct
     match new_value.update(&storage_system).await {
         Ok(res) if res.rows_affected() > 0 => Ok(Json(new_value)),
@@ -86,12 +74,9 @@ pub async fn patch_item_type(app_state: &State<api::AppStatePointer>, id: i64,
 }
 
 #[delete("/item_types/<id>")]
-pub async fn delete_item_type(app_state: &State<api::AppStatePointer>, id: i64) -> Result<Json<ItemType>, BadRequest<Json<MessageResponse>>> {
-    let storage_system = {
-        let app_state = app_state.lock().await;
-        app_state.get_storage_system().clone()
-    };
-    match ItemType::from(&storage_system, id).await {
+pub async fn delete_item_type(app_state: &State<api::AppState>, id: i64) -> Result<Json<ItemType>, BadRequest<Json<MessageResponse>>> {
+    let storage_system = app_state.get_storage_system();
+    match ItemType::from(storage_system, id).await {
         Ok(result) => {
             match result {
                 None => { Err(BadRequest(Json(MessageResponse { message: "Cannot find element".to_string() }))) } // BadRequest(Json(MessageResponse { message: "Cannot find id ".to_owned() + &*id.to_string() })))}
@@ -111,11 +96,8 @@ pub async fn delete_item_type(app_state: &State<api::AppStatePointer>, id: i64) 
 // misc
 // TODO: Anzahl von erstellten Kategorien
 #[get("/count/item_types")]
-pub async fn count_item_type_entries(app_state: &State<api::AppStatePointer>) -> Result<Json<EntriesCountResponse>, BadRequest<Json<MessageResponse>>> {
-    let storage_system = {
-        let app_state = app_state.lock().await;
-        app_state.get_storage_system().clone()
-    };
+pub async fn count_item_type_entries(app_state: &State<api::AppState>) -> Result<Json<EntriesCountResponse>, BadRequest<Json<MessageResponse>>> {
+    let storage_system = app_state.get_storage_system();
     let result = query_as!(EntriesCountResponse, "SELECT COUNT(id) AS count, 'item_types' AS 'table' FROM item_types;").fetch_one(storage_system.get_database()).await;
     match result {
         Ok(result) => {
