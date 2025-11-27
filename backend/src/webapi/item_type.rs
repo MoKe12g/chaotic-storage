@@ -109,7 +109,6 @@ pub async fn delete_item_type(app_state: &State<api::AppStatePointer>, id: i64) 
 }
 
 // misc
-// TODO: Anzahl von erstellten Kategorien
 #[get("/count/item_types")]
 pub async fn count_item_type_entries(app_state: &State<api::AppStatePointer>) -> Result<Json<EntriesCountResponse>, BadRequest<Json<MessageResponse>>> {
     let storage_system = {

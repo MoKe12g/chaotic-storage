@@ -110,7 +110,6 @@ pub async fn delete_transaction(app_state: &State<api::AppStatePointer>, id: i64
 }
 
 // misc
-// TODO: Anzahl von erstellten Kategorien
 #[get("/count/transactions")]
 pub async fn count_transaction_entries(app_state: &State<api::AppStatePointer>) -> Result<Json<EntriesCountResponse>, BadRequest<Json<MessageResponse>>> {
     let storage_system = {

@@ -41,7 +41,7 @@ pub(crate) async fn get_allocation(app_state: &State<api::AppStatePointer>,
 }
 
 #[get("/allocations/<id>")]
-pub(crate) async fn get_allocation_by_id(app_state: &State<api::AppStatePointer>, id: i64) -> Option<Json<Allocation>> {
+pub(crate) async fn get_allocation_by_id(app_state: &State<api::AppState>, id: i64) -> Result<Json<Allocation>,BadRequest<Json<MessageResponse>>> {
     let storage_system = {
         let app_state = app_state.lock().await;
         app_state.get_storage_system().clone()
@@ -49,10 +49,12 @@ pub(crate) async fn get_allocation_by_id(app_state: &State<api::AppStatePointer>
     let allocation_from_id = Allocation::from(&storage_system, id).await;
     match allocation_from_id {
         Ok(allocation_from_id) => {
-            allocation_from_id.map(Json)
-        }
-        // TODO: Log errors in all files
-        Err(_) => None
+            match allocation_from_id{
+                Some(allocation_from_id) => {Ok(Json(allocation_from_id))},
+                None => Err(BadRequest(Json(MessageResponse { message: "Backend returned no value".parse().unwrap() })))
+            }
+        },
+        Err(err) => Err(BadRequest(Json(MessageResponse { message: err.to_string() + " from backend" })))
     }
 }
 
@@ -111,7 +113,6 @@ pub async fn delete_allocation(app_state: &State<api::AppStatePointer>, id: i64)
 }
 
 // misc
-// TODO: Anzahl von erstellten Kategorien
 #[get("/count/allocations")]
 pub async fn count_allocation_entries(app_state: &State<api::AppStatePointer>) -> Result<Json<EntriesCountResponse>, BadRequest<Json<MessageResponse>>> {
     let storage_system = {
