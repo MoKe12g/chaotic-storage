@@ -109,7 +109,6 @@ pub async fn delete_storage_box(app_state: &State<api::AppStatePointer>, id: i64
 }
 
 // misc
-// TODO: Anzahl von erstellten Kategorien
 #[get("/count/storage_boxes")]
 pub async fn count_storage_box_entries(app_state: &State<api::AppStatePointer>) -> Result<Json<EntriesCountResponse>, BadRequest<Json<MessageResponse>>> {
     let storage_system = {

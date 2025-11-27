@@ -61,7 +61,6 @@ pub async fn post_category(app_state: &State<api::AppStatePointer>, input: Json<
         let app_state = app_state.lock().await;
         app_state.get_storage_system().clone()
     };
-    // TODO: Is there a better way than to just discard the given id?
     match Category::create(&storage_system, input.into_inner().comment).await {
         Ok(result) => { Ok(Json(result)) }
         Err(err) => { Err(BadRequest(Json(MessageResponse { message: err.to_string() + " from backend" }))) }
@@ -108,7 +107,6 @@ pub async fn delete_category(app_state: &State<api::AppStatePointer>, id: i64) -
 }
 
 // misc
-// TODO: Anzahl von erstellten Kategorien
 #[get("/count/categories")]
 pub async fn count_category_entries(app_state: &State<api::AppStatePointer>) -> Result<Json<EntriesCountResponse>, BadRequest<Json<MessageResponse>>> {
     let storage_system = {
