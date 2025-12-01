@@ -1,6 +1,6 @@
 {
   "db_name": "SQLite",
-  "query": "SELECT *\n        FROM allocations\n        WHERE 1\n        \n        \n        AND category_id = ?\n        \n        \n        ORDER BY ID ASC;",
+  "query": "SELECT *\n        FROM allocations\n        WHERE 1\n        AND storage_box_id = ?\n        \n        \n        \n        ORDER BY ID ASC\n        ;",
   "describe": {
     "columns": [
       {
@@ -46,5 +46,5 @@
       false
     ]
   },
-  "hash": "f174e8cddcfc7d4428bb3396e16cc073ca08f001cc8ddf899591c16bbb92dd1d"
+  "hash": "1e8d7df03d1b59c34f0afdb711828bd13065a411c18701ffffd0032303daebcb"
 }

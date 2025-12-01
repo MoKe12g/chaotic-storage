@@ -1,6 +1,6 @@
 {
   "db_name": "SQLite",
-  "query": "SELECT *\n        FROM allocations\n        WHERE 1\n        \n        AND can_be_outside = ?\n        \n        \n        \n        ORDER BY ID ASC;",
+  "query": "SELECT *\n        FROM allocations\n        WHERE 1\n        AND storage_box_id = ?\n        \n        \n        AND description LIKE '%' || ? || '%'\n        ORDER BY ID ASC\n        LIMIT ? OFFSET ?;",
   "describe": {
     "columns": [
       {
@@ -35,7 +35,7 @@
       }
     ],
     "parameters": {
-      "Right": 1
+      "Right": 4
     },
     "nullable": [
       false,
@@ -46,5 +46,5 @@
       false
     ]
   },
-  "hash": "a341725e033beb3d769d090e7fab78467419a26059d5d258c4767ff2296ae0ba"
+  "hash": "0300cc403329158d146c8d398f7157119b3334ed1935398850c820f7a427e45f"
 }
