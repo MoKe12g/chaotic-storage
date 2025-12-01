@@ -1,6 +1,6 @@
 {
   "db_name": "SQLite",
-  "query": "SELECT *\n        FROM storage_boxes\n        WHERE id BETWEEN ? AND ?\n        ORDER BY ID ASC;",
+  "query": "SELECT *\n        FROM storage_boxes\n        WHERE 1\n        \n        \n        \n        AND id BETWEEN ? AND ?\n        ORDER BY ID ASC;",
   "describe": {
     "columns": [
       {
@@ -28,5 +28,5 @@
       false
     ]
   },
-  "hash": "42b856aa973efe8351899259829d3202ac13ed5e73cdd4d6e493a466b5cfa98c"
+  "hash": "0faf94677a4224df2550daf5b4583e4aa2267be7c957a4bc82c65265c43133a0"
 }
