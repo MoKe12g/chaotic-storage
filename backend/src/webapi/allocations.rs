@@ -7,14 +7,10 @@ use rocket::{delete, get, patch, post, State};
 use sqlx::query_as;
 use sqlx_conditional_queries::conditional_query_as;
 
-#[get("/allocations?<limit>&<page>&<storage_box_id>&<can_be_outside>&<category_id>&<description>")]
+#[get("/allocations?<limit>&<page>")]
 pub(crate) async fn get_allocation(app_state: &State<api::AppState>,
                                    limit: Option<i64>,
-                                   page: Option<i64>,
-                                   storage_box_id: Option<i64>,
-                                   can_be_outside: Option<bool>,
-                                   category_id: Option<i64>,
-                                   description: Option<String>) -> Result<Json<Vec<Allocation>>, BadRequest<Json<MessageResponse>>> {
+                                   page: Option<i64>) -> Result<Json<Vec<Allocation>>, BadRequest<Json<MessageResponse>>> {
     let storage_system = {
         let app_state = app_state.lock().await;
         app_state.get_storage_system().clone()
@@ -29,36 +25,11 @@ pub(crate) async fn get_allocation(app_state: &State<api::AppState>,
     match conditional_query_as!(Allocation,
         r#"SELECT *
         FROM allocations
-        WHERE 1
-        {#storage_box_id}
-        {#can_be_outside}
-        {#category_id}
-        {#description}
         {#pagination}
         ORDER BY ID ASC;"#,
-        #storage_box_id = match storage_box_id {
-            Some(_) =>
-            "AND storage_box_id = {storage_box_id}",
-            None => "",
-        },
-        #can_be_outside = match can_be_outside {
-            Some(_) =>
-            "AND can_be_outside = {can_be_outside}",
-            None => "",
-        },
-        #category_id = match category_id {
-            Some(_) =>
-            "AND category_id = {category_id}",
-            None => "",
-        },
-        #description = match description.as_ref() {
-            Some(_) =>
-            "AND description LIKE '%' || {description} || '%'",
-            None => "",
-        },
         #pagination = match limit {
             Some(_) =>
-                "AND id BETWEEN {start} AND {end}",
+                "WHERE id BETWEEN {start} AND {end}",
             None => "",
         },
     ).fetch_all(storage_system.get_database()).await {
