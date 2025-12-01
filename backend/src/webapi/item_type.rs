@@ -7,10 +7,12 @@ use rocket::{delete, get, patch, post, State};
 use sqlx::query_as;
 use sqlx_conditional_queries::conditional_query_as;
 
-#[get("/item_types?<limit>&<page>")]
+#[get("/item_types?<limit>&<page>&<id>&<storage_property>")]
 pub(crate) async fn get_item_type(app_state: &State<api::AppStatePointer>,
                                   limit: Option<i64>,
-                                  page: Option<i64>) -> Result<Json<Vec<ItemType>>, BadRequest<Json<MessageResponse>>> {
+                                  page: Option<i64>,
+                                  id: Option<i64>,
+                                  storage_property: Option<String>) -> Result<Json<Vec<ItemType>>, BadRequest<Json<MessageResponse>>> {
     let storage_system = {
         let app_state = app_state.lock().await;
         app_state.get_storage_system().clone()
@@ -25,11 +27,24 @@ pub(crate) async fn get_item_type(app_state: &State<api::AppStatePointer>,
     match conditional_query_as!(ItemType,
         r#"SELECT *
         FROM item_types
+        WHERE 1
+        {#id}
+        {#storage_property}
         {#pagination}
         ORDER BY ID ASC;"#,
+        #id = match id.as_ref() {
+            Some(_) =>
+                "AND id = {id}",
+            None => "",
+        },
+        #storage_property = match storage_property.as_ref() {
+            Some(_) =>
+                "AND storage_property = {storage_property}",
+            None => "",
+        },
         #pagination = match limit {
             Some(_) =>
-                "WHERE id BETWEEN {start} AND {end}",
+                "AND id BETWEEN {start} AND {end}",
             None => "",
         },
     ).fetch_all(storage_system.get_database()).await {
