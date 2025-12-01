@@ -1,6 +1,6 @@
 {
   "db_name": "SQLite",
-  "query": "SELECT *\n        FROM transactions\n        \n        ORDER BY ID ASC;",
+  "query": "SELECT *\n        FROM transactions\n        WHERE 1\n        AND id = ?\n        \n        \n        AND id BETWEEN ? AND ?\n        ORDER BY ID ASC;",
   "describe": {
     "columns": [
       {
@@ -25,7 +25,7 @@
       }
     ],
     "parameters": {
-      "Right": 0
+      "Right": 3
     },
     "nullable": [
       false,
@@ -34,5 +34,5 @@
       false
     ]
   },
-  "hash": "6844c2657eaec9c845817c0c22a964e15d6143da1f77be5ba9d0c7e176553cfe"
+  "hash": "b0657e306b4e8e33ef5a7a8341ab859ad7592da31d3a3756f4f7df913b819109"
 }

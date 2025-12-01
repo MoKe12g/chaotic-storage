@@ -1,0 +1,38 @@
+{
+  "db_name": "SQLite",
+  "query": "SELECT *\n        FROM transactions\n        WHERE 1\n        AND id = ?\n        AND allocation_id = ?\n        \n        AND id BETWEEN ? AND ?\n        ORDER BY ID ASC;",
+  "describe": {
+    "columns": [
+      {
+        "name": "id",
+        "ordinal": 0,
+        "type_info": "Integer"
+      },
+      {
+        "name": "allocation_id",
+        "ordinal": 1,
+        "type_info": "Integer"
+      },
+      {
+        "name": "item_delta",
+        "ordinal": 2,
+        "type_info": "Integer"
+      },
+      {
+        "name": "date",
+        "ordinal": 3,
+        "type_info": "Datetime"
+      }
+    ],
+    "parameters": {
+      "Right": 4
+    },
+    "nullable": [
+      false,
+      false,
+      false,
+      false
+    ]
+  },
+  "hash": "e20c62b54b0311995899eea0e68efddd4701085e4d2545e5711b149068de2f6e"
+}
