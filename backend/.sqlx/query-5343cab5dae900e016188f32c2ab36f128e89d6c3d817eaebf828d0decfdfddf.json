@@ -1,0 +1,26 @@
+{
+  "db_name": "SQLite",
+  "query": "SELECT *\n        FROM categories\n        WHERE 1\n        AND id = ?\n        AND comment LIKE '%' || ? || '%'\n        AND id BETWEEN ? AND ?\n        ORDER BY ID ASC;",
+  "describe": {
+    "columns": [
+      {
+        "name": "id",
+        "ordinal": 0,
+        "type_info": "Integer"
+      },
+      {
+        "name": "comment",
+        "ordinal": 1,
+        "type_info": "Text"
+      }
+    ],
+    "parameters": {
+      "Right": 4
+    },
+    "nullable": [
+      false,
+      false
+    ]
+  },
+  "hash": "5343cab5dae900e016188f32c2ab36f128e89d6c3d817eaebf828d0decfdfddf"
+}

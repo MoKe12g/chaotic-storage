@@ -7,10 +7,11 @@ use rocket::{delete, get, patch, post, State};
 use sqlx::query_as;
 use sqlx_conditional_queries::conditional_query_as;
 
-#[get("/categories?<limit>&<page>&<comment>")]
+#[get("/categories?<limit>&<page>&<id>&<comment>")]
 pub(crate) async fn get_category(app_state: &State<api::AppStatePointer>,
                                  limit: Option<i64>,
                                  page: Option<i64>,
+                                 id: Option<i64>,
                                  comment: Option<String>) -> Result<Json<Vec<Category>>, BadRequest<Json<MessageResponse>>> {
     let storage_system = {
         let app_state = app_state.lock().await;
@@ -27,10 +28,16 @@ pub(crate) async fn get_category(app_state: &State<api::AppStatePointer>,
         r#"SELECT *
         FROM categories
         WHERE 1
+        {#id}
         {#comment}
         {#pagination}
         ORDER BY ID ASC;"#,
-        #comment = match limit.as_ref() {
+        #id = match id.as_ref() {
+            Some(_) =>
+                "AND id = {id}",
+            None => "",
+        },
+        #comment = match comment.as_ref() {
             Some(_) =>
                 "AND comment LIKE '%' || {comment} || '%'",
             None => "",

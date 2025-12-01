@@ -1,0 +1,26 @@
+{
+  "db_name": "SQLite",
+  "query": "SELECT *\n        FROM categories\n        WHERE 1\n        \n        \n        AND id BETWEEN ? AND ?\n        ORDER BY ID ASC;",
+  "describe": {
+    "columns": [
+      {
+        "name": "id",
+        "ordinal": 0,
+        "type_info": "Integer"
+      },
+      {
+        "name": "comment",
+        "ordinal": 1,
+        "type_info": "Text"
+      }
+    ],
+    "parameters": {
+      "Right": 2
+    },
+    "nullable": [
+      false,
+      false
+    ]
+  },
+  "hash": "eeb3caf0a8dbe929dcf737d978387e4131b163b3b266f21a9643f55d33329ecf"
+}
