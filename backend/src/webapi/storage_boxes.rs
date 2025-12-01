@@ -7,10 +7,13 @@ use rocket::{delete, get, patch, post, State};
 use sqlx::query_as;
 use sqlx_conditional_queries::conditional_query_as;
 
-#[get("/storage_boxes?<limit>&<page>")]
+#[get("/storage_boxes?<limit>&<page>&<id>&<place>&<item_type>")]
 pub(crate) async fn get_storage_box(app_state: &State<api::AppState>,
                                     limit: Option<i64>,
-                                    page: Option<i64>) -> Result<Json<Vec<StorageBox>>, BadRequest<Json<MessageResponse>>> {
+                                    page: Option<i64>,
+                                    id: Option<i64>,
+                                    place: Option<String>,
+                                    item_type: Option<i64>) -> Result<Json<Vec<StorageBox>>, BadRequest<Json<MessageResponse>>> {
     let storage_system = app_state.get_storage_system();
 
     // calculate pagination
@@ -22,11 +25,30 @@ pub(crate) async fn get_storage_box(app_state: &State<api::AppState>,
     match conditional_query_as!(StorageBox,
         r#"SELECT *
         FROM storage_boxes
+        WHERE 1
+        {#id}
+        {#place}
+        {#item_type}
         {#pagination}
         ORDER BY ID ASC;"#,
+        #id = match id.as_ref() {
+            Some(_) =>
+                "AND id = {id}",
+            None => "",
+        },
+        #place = match place.as_ref() {
+            Some(_) =>
+                "AND place LIKE '%' || {place} || '%'",
+            None => "",
+        },
+        #item_type = match item_type.as_ref() {
+            Some(_) =>
+                "AND item_type = {item_type}",
+            None => "",
+        },
         #pagination = match limit {
             Some(_) =>
-                "WHERE id BETWEEN {start} AND {end}",
+                "AND id BETWEEN {start} AND {end}",
             None => "",
         },
     ).fetch_all(storage_system.get_database()).await {

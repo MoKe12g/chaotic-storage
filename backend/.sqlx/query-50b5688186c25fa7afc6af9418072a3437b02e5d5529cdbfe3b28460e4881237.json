@@ -1,0 +1,32 @@
+{
+  "db_name": "SQLite",
+  "query": "SELECT *\n        FROM storage_boxes\n        WHERE 1\n        \n        AND place LIKE '%' || ? || '%'\n        \n        \n        ORDER BY ID ASC;",
+  "describe": {
+    "columns": [
+      {
+        "name": "id",
+        "ordinal": 0,
+        "type_info": "Integer"
+      },
+      {
+        "name": "place",
+        "ordinal": 1,
+        "type_info": "Text"
+      },
+      {
+        "name": "item_type",
+        "ordinal": 2,
+        "type_info": "Integer"
+      }
+    ],
+    "parameters": {
+      "Right": 1
+    },
+    "nullable": [
+      false,
+      false,
+      false
+    ]
+  },
+  "hash": "50b5688186c25fa7afc6af9418072a3437b02e5d5529cdbfe3b28460e4881237"
+}

@@ -1,0 +1,32 @@
+{
+  "db_name": "SQLite",
+  "query": "SELECT *\n        FROM storage_boxes\n        WHERE 1\n        AND id = ?\n        \n        AND item_type = ?\n        \n        ORDER BY ID ASC;",
+  "describe": {
+    "columns": [
+      {
+        "name": "id",
+        "ordinal": 0,
+        "type_info": "Integer"
+      },
+      {
+        "name": "place",
+        "ordinal": 1,
+        "type_info": "Text"
+      },
+      {
+        "name": "item_type",
+        "ordinal": 2,
+        "type_info": "Integer"
+      }
+    ],
+    "parameters": {
+      "Right": 2
+    },
+    "nullable": [
+      false,
+      false,
+      false
+    ]
+  },
+  "hash": "732c364b4c938d8ef55f797cc289c97d26606819b5e5b0e6e3b4804330678540"
+}

@@ -1,0 +1,32 @@
+{
+  "db_name": "SQLite",
+  "query": "SELECT *\n        FROM storage_boxes\n        WHERE 1\n        \n        \n        AND item_type = ?\n        AND id BETWEEN ? AND ?\n        ORDER BY ID ASC;",
+  "describe": {
+    "columns": [
+      {
+        "name": "id",
+        "ordinal": 0,
+        "type_info": "Integer"
+      },
+      {
+        "name": "place",
+        "ordinal": 1,
+        "type_info": "Text"
+      },
+      {
+        "name": "item_type",
+        "ordinal": 2,
+        "type_info": "Integer"
+      }
+    ],
+    "parameters": {
+      "Right": 3
+    },
+    "nullable": [
+      false,
+      false,
+      false
+    ]
+  },
+  "hash": "747793a31d0aac66c28447d5f489245310e5285bfe71250507382bd3b3a89803"
+}
