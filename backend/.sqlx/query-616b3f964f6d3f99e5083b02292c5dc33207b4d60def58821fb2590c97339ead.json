@@ -1,6 +1,6 @@
 {
   "db_name": "SQLite",
-  "query": "SELECT *\n        FROM allocations\n        WHERE 1\n        \n        \n        \n        \n        \n        ORDER BY ID ASC;",
+  "query": "SELECT *\n        FROM allocations\n        WHERE 1\n        \n        \n        \n        AND description LIKE '%' || ? || '%'\n        ORDER BY ID ASC\n        LIMIT ? OFFSET ?;",
   "describe": {
     "columns": [
       {
@@ -35,7 +35,7 @@
       }
     ],
     "parameters": {
-      "Right": 0
+      "Right": 3
     },
     "nullable": [
       false,
@@ -46,5 +46,5 @@
       false
     ]
   },
-  "hash": "afd3ab8a86a498c3c990f59ad59ed86e656b672f3cd0f3df3e65244054738598"
+  "hash": "616b3f964f6d3f99e5083b02292c5dc33207b4d60def58821fb2590c97339ead"
 }

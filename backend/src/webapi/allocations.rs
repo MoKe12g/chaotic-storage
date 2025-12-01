@@ -31,10 +31,9 @@ pub(crate) async fn get_allocation(
     };
 
     // calculate pagination
-    let new_page = page.unwrap_or(0);
+    let page = page.unwrap_or(0);
     let new_limit = limit.unwrap_or(64);
-    let start = new_limit * new_page + 1;
-    let end = new_limit * (new_page + 1);
+    let offset = new_limit * page;
 
     match conditional_query_as!(Allocation,
         r#"SELECT *
@@ -44,31 +43,31 @@ pub(crate) async fn get_allocation(
         {#can_be_outside}
         {#category_id}
         {#description}
-        {#pagination}
-        ORDER BY ID ASC;"#,
+        ORDER BY ID ASC
+        {#pagination};"#,
         #storage_box_id = match storage_box_id {
             Some(_) =>
-            "AND storage_box_id = {storage_box_id}",
+                "AND storage_box_id = {storage_box_id}",
             None => "",
         },
         #can_be_outside = match can_be_outside {
             Some(_) =>
-            "AND can_be_outside = {can_be_outside}",
+                "AND can_be_outside = {can_be_outside}",
             None => "",
         },
         #category_id = match category_id {
             Some(_) =>
-            "AND category_id = {category_id}",
+                "AND category_id = {category_id}",
             None => "",
         },
         #description = match description.as_ref() {
             Some(_) =>
-            "AND description LIKE '%' || {description} || '%'",
+                "AND description LIKE '%' || {description} || '%'",
             None => "",
         },
         #pagination = match limit {
             Some(_) =>
-                "AND id BETWEEN {start} AND {end}",
+                "LIMIT {new_limit} OFFSET {offset}",
             None => "",
         },
     ).fetch_all(storage_system.get_database()).await {
