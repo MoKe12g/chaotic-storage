@@ -63,7 +63,7 @@ pub(crate) async fn get_allocation(
         },
         #description = match description.as_ref() {
             Some(_) =>
-            "AND description = {description}",
+            "AND description LIKE '%' || {description} || '%'",
             None => "",
         },
         #pagination = match limit {
