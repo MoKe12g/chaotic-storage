@@ -19,8 +19,7 @@ pub(crate) async fn get_storage_box(app_state: &State<api::AppState>,
     // calculate pagination
     let new_page = page.unwrap_or(0);
     let new_limit = limit.unwrap_or(64);
-    let start = new_limit * new_page + 1;
-    let end = new_limit * (new_page + 1);
+    let offset = new_limit * new_page;
 
     match conditional_query_as!(StorageBox,
         r#"SELECT *
@@ -29,8 +28,8 @@ pub(crate) async fn get_storage_box(app_state: &State<api::AppState>,
         {#id}
         {#place}
         {#item_type}
-        {#pagination}
-        ORDER BY ID ASC;"#,
+        ORDER BY ID ASC
+        {#pagination};"#,
         #id = match id.as_ref() {
             Some(_) =>
                 "AND id = {id}",
@@ -48,7 +47,7 @@ pub(crate) async fn get_storage_box(app_state: &State<api::AppState>,
         },
         #pagination = match limit {
             Some(_) =>
-                "AND id BETWEEN {start} AND {end}",
+                "LIMIT {new_limit} OFFSET {offset}",
             None => "",
         },
     ).fetch_all(storage_system.get_database()).await {

@@ -1,6 +1,6 @@
 {
   "db_name": "SQLite",
-  "query": "SELECT *\n        FROM storage_boxes\n        WHERE 1\n        \n        \n        \n        \n        ORDER BY ID ASC;",
+  "query": "SELECT *\n        FROM storage_boxes\n        WHERE 1\n        AND id = ?\n        AND place LIKE '%' || ? || '%'\n        \n        ORDER BY ID ASC\n        ;",
   "describe": {
     "columns": [
       {
@@ -20,7 +20,7 @@
       }
     ],
     "parameters": {
-      "Right": 0
+      "Right": 2
     },
     "nullable": [
       false,
@@ -28,5 +28,5 @@
       false
     ]
   },
-  "hash": "cfb292e88c6c7fab50c2e84cce60fb22f4df403d1ca4ff697012a525b4df3c09"
+  "hash": "4b33bc62e99477159c4e3d113f2e2d93d9862e246c0ae3a37f6ee8118953d1ac"
 }
