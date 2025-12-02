@@ -33,6 +33,11 @@ pub(crate) async fn get_category(app_state: &State<api::AppState>,
                 "AND id = {id}",
             None => "",
         },
+        #id = match id.as_ref() {
+            Some(_) =>
+                "AND id = {id}",
+            None => "",
+        },
         #comment = match comment.as_ref() {
             Some(_) =>
                 "AND comment LIKE '%' || {comment} || '%'",
