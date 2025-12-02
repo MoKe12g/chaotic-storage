@@ -29,7 +29,7 @@ pub(crate) async fn get_item_type(app_state: &State<api::AppStatePointer>,
         WHERE 1
         {#id}
         {#storage_property}
-        ORDER BY ID ASC
+        ORDER BY id ASC
         {#pagination};"#,
         #id = match id.as_ref() {
             Some(_) =>
