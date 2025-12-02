@@ -1,6 +1,6 @@
 {
   "db_name": "SQLite",
-  "query": "SELECT *\n        FROM transactions\n        WHERE 1\n        \n        \n        AND item_delta = ?\n        ORDER BY ID ASC\n        LIMIT ? OFFSET ?;",
+  "query": "SELECT *\n        FROM transactions\n        WHERE 1\n        \n        AND allocation_id = ?\n        \n        ORDER BY id ASC\n        LIMIT ? OFFSET ?;",
   "describe": {
     "columns": [
       {
@@ -34,5 +34,5 @@
       false
     ]
   },
-  "hash": "54b21c37a3d9c710ea6205c3730423976701e0888c9e24cc23f40daf51d93ec2"
+  "hash": "062f9a8aa6770a05480491c63ab1487b5b86f4a3af87b26b3df8dcc344a99fd1"
 }

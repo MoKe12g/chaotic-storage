@@ -31,7 +31,7 @@ pub(crate) async fn get_transaction(app_state: &State<api::AppStatePointer>,
         {#id}
         {#allocation_id}
         {#item_delta}
-        ORDER BY ID ASC
+        ORDER BY id ASC
         {#pagination};"#,
         #id = match id.as_ref() {
             Some(_) =>
