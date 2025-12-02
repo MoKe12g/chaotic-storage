@@ -73,7 +73,7 @@ pub(crate) async fn get_allocation_by_id(app_state: &State<api::AppState>, id: i
         Ok(allocation_from_id) => {
             match allocation_from_id{
                 Some(allocation_from_id) => {Ok(Json(allocation_from_id))},
-                None => Err(BadRequest(Json(MessageResponse { message: "Backend returned no value".parse().unwrap() })))
+                None => Err(BadRequest(Json(MessageResponse { message: "Backend returned no value".into() })))
             }
         },
         Err(err) => Err(BadRequest(Json(MessageResponse { message: err.to_string() + " from backend" })))
@@ -98,7 +98,7 @@ pub async fn patch_allocation(app_state: &State<api::AppState>, id: i64,
                               input: Json<Allocation>) -> Result<Json<Allocation>, BadRequest<Json<MessageResponse>>> {
     let storage_system = app_state.get_storage_system();
     let new_value = Allocation { id, description: input.description.clone(), date_of_entry: input.date_of_entry, can_be_outside: input.can_be_outside, category_id: input.category_id, storage_box_id: input.storage_box_id }; // make sure that the id is right inside the struct
-    match new_value.update(&storage_system).await {
+    match new_value.update(storage_system).await {
         Ok(res) if res.rows_affected() > 0 => Ok(Json(new_value)),
         Ok(_) => Err(BadRequest(Json(MessageResponse { message: "No rows updated".into() }))),
         Err(err) => { Err(BadRequest(Json(MessageResponse { message: err.to_string() + " from backend" }))) }
