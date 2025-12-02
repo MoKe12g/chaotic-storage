@@ -43,7 +43,7 @@ pub(crate) async fn get_allocation(
         {#can_be_outside}
         {#category_id}
         {#description}
-        ORDER BY ID ASC
+        ORDER BY id ASC
         {#pagination};"#,
         #storage_box_id = match storage_box_id {
             Some(_) =>

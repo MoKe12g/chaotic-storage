@@ -1,0 +1,50 @@
+{
+  "db_name": "SQLite",
+  "query": "SELECT *\n        FROM allocations\n        WHERE 1\n        \n        AND can_be_outside = ?\n        AND category_id = ?\n        \n        ORDER BY id ASC\n        LIMIT ? OFFSET ?;",
+  "describe": {
+    "columns": [
+      {
+        "name": "id",
+        "ordinal": 0,
+        "type_info": "Integer"
+      },
+      {
+        "name": "description",
+        "ordinal": 1,
+        "type_info": "Text"
+      },
+      {
+        "name": "date_of_entry",
+        "ordinal": 2,
+        "type_info": "Datetime"
+      },
+      {
+        "name": "can_be_outside",
+        "ordinal": 3,
+        "type_info": "Bool"
+      },
+      {
+        "name": "category_id",
+        "ordinal": 4,
+        "type_info": "Integer"
+      },
+      {
+        "name": "storage_box_id",
+        "ordinal": 5,
+        "type_info": "Integer"
+      }
+    ],
+    "parameters": {
+      "Right": 4
+    },
+    "nullable": [
+      false,
+      false,
+      false,
+      true,
+      false,
+      false
+    ]
+  },
+  "hash": "26a146ea81c3da2b48167d952c18aafc20ba615eec0c0cf868a90a634501cba6"
+}

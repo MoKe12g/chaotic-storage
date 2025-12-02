@@ -1,0 +1,50 @@
+{
+  "db_name": "SQLite",
+  "query": "SELECT *\n        FROM allocations\n        WHERE 1\n        \n        \n        \n        AND description LIKE '%' || ? || '%'\n        ORDER BY id ASC\n        LIMIT ? OFFSET ?;",
+  "describe": {
+    "columns": [
+      {
+        "name": "id",
+        "ordinal": 0,
+        "type_info": "Integer"
+      },
+      {
+        "name": "description",
+        "ordinal": 1,
+        "type_info": "Text"
+      },
+      {
+        "name": "date_of_entry",
+        "ordinal": 2,
+        "type_info": "Datetime"
+      },
+      {
+        "name": "can_be_outside",
+        "ordinal": 3,
+        "type_info": "Bool"
+      },
+      {
+        "name": "category_id",
+        "ordinal": 4,
+        "type_info": "Integer"
+      },
+      {
+        "name": "storage_box_id",
+        "ordinal": 5,
+        "type_info": "Integer"
+      }
+    ],
+    "parameters": {
+      "Right": 3
+    },
+    "nullable": [
+      false,
+      false,
+      false,
+      true,
+      false,
+      false
+    ]
+  },
+  "hash": "34c7d069dee5a675f85859d06eb80f0cdd21b061fa9a439563fc2b1e2e6adae4"
+}
