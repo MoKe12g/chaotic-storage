@@ -1,6 +1,6 @@
 {
   "db_name": "SQLite",
-  "query": "SELECT *\n        FROM item_types\n        WHERE 1\n        AND id = ?\n        \n        AND id BETWEEN ? AND ?\n        ORDER BY ID ASC;",
+  "query": "SELECT *\n        FROM item_types\n        WHERE 1\n        AND id = ?\n        AND storage_property = ?\n        ORDER BY ID ASC\n        LIMIT ? OFFSET ?;",
   "describe": {
     "columns": [
       {
@@ -15,12 +15,12 @@
       }
     ],
     "parameters": {
-      "Right": 3
+      "Right": 4
     },
     "nullable": [
       false,
       false
     ]
   },
-  "hash": "6c98672b22477bdb3ec379f541fbf56f0e303c7f38a153d34e4a465fb98e0dca"
+  "hash": "0f74b529d7a2b7e3f4499d32e4e1529a9300ebf0e707b55963205cd1b6f96989"
 }
