@@ -1,6 +1,6 @@
 {
   "db_name": "SQLite",
-  "query": "SELECT *\n        FROM categories\n        WHERE 1\n        AND id = ?\n        \n        ORDER BY ID ASC\n        LIMIT ? OFFSET ?;",
+  "query": "SELECT *\n        FROM categories\n        WHERE 1\n        \n        AND comment LIKE '%' || ? || '%'\n        ORDER BY id ASC\n        LIMIT ? OFFSET ?;",
   "describe": {
     "columns": [
       {
@@ -22,5 +22,5 @@
       false
     ]
   },
-  "hash": "ac0eb11a6718c2b2a4ae97ddc6c176c69b5fae41f186b6357bc0bac47d4ec144"
+  "hash": "18573ba168c9db70fc9c78cadfaf82ee31ffcb7f2ae011c26d8d342e77749721"
 }
