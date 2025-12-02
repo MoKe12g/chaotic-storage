@@ -1,6 +1,6 @@
 {
   "db_name": "SQLite",
-  "query": "SELECT *\n        FROM categories\n        WHERE 1\n        \n        \n        \n        ORDER BY ID ASC;",
+  "query": "SELECT *\n        FROM categories\n        WHERE 1\n        \n        \n        ORDER BY ID ASC\n        ;",
   "describe": {
     "columns": [
       {
@@ -22,5 +22,5 @@
       false
     ]
   },
-  "hash": "b0d459f4b855cdecfe5f3114b7af7f629816a3679f1fa99768545560a1916acc"
+  "hash": "7e18e6630df5eb9c802272d3477e82adbfa986aefe1afab3f29eb7365a939356"
 }
