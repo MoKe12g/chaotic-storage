@@ -16,19 +16,6 @@ pub(crate) async fn get_allocation(app_state: &State<api::AppState>,
                                    category_id:Option<i64>,
                                    description:Option<i64>) -> Result<Json<Vec<Allocation>>, BadRequest<Json<MessageResponse>>> {
     let storage_system = app_state.get_storage_system();
-pub(crate) async fn get_allocation(
-    app_state: &State<api::AppStatePointer>,
-    limit: Option<i64>,
-    page: Option<i64>,
-    storage_box_id: Option<i64>,
-    can_be_outside: Option<bool>,
-    category_id: Option<i64>,
-    description: Option<String>,
-) -> Result<Json<Vec<Allocation>>, BadRequest<Json<MessageResponse>>> {
-    let storage_system = {
-        let app_state = app_state.lock().await;
-        app_state.get_storage_system().clone()
-    };
 
     // calculate pagination
     let page = page.unwrap_or(0);
