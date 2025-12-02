@@ -1,6 +1,6 @@
 {
   "db_name": "SQLite",
-  "query": "SELECT *\n        FROM transactions\n        WHERE 1\n        AND id = ?\n        AND allocation_id = ?\n        AND item_delta = ?\n        \n        ORDER BY ID ASC;",
+  "query": "SELECT *\n        FROM transactions\n        WHERE 1\n        AND id = ?\n        AND allocation_id = ?\n        \n        ORDER BY ID ASC\n        ;",
   "describe": {
     "columns": [
       {
@@ -25,7 +25,7 @@
       }
     ],
     "parameters": {
-      "Right": 3
+      "Right": 2
     },
     "nullable": [
       false,
@@ -34,5 +34,5 @@
       false
     ]
   },
-  "hash": "c9044eda98340dcb33e418bede566d356fb1c431e826548155e4d44d32a266d5"
+  "hash": "4b2cd29038ee2bff9118a3fbbaf175d79ea0b625957093fbced3b13633a8a983"
 }
