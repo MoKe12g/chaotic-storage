@@ -28,7 +28,7 @@ pub(crate) async fn get_storage_box(app_state: &State<api::AppState>,
         {#id}
         {#place}
         {#item_type}
-        ORDER BY ID ASC
+        ORDER BY id ASC
         {#pagination};"#,
         #id = match id.as_ref() {
             Some(_) =>
