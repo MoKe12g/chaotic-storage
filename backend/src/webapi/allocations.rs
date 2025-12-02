@@ -11,10 +11,7 @@ use sqlx_conditional_queries::conditional_query_as;
 pub(crate) async fn get_allocation(app_state: &State<api::AppState>,
                                    limit: Option<i64>,
                                    page: Option<i64>) -> Result<Json<Vec<Allocation>>, BadRequest<Json<MessageResponse>>> {
-    let storage_system = {
-        let app_state = app_state.lock().await;
-        app_state.get_storage_system().clone()
-    };
+    let storage_system = app_state.get_storage_system();
 
     // calculate pagination
     let new_page = page.unwrap_or(0);
