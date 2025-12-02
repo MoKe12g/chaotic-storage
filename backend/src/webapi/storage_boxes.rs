@@ -7,26 +7,47 @@ use rocket::{delete, get, patch, post, State};
 use sqlx::query_as;
 use sqlx_conditional_queries::conditional_query_as;
 
-#[get("/storage_boxes?<limit>&<page>")]
+#[get("/storage_boxes?<limit>&<page>&<id>&<place>&<item_type>")]
 pub(crate) async fn get_storage_box(app_state: &State<api::AppState>,
                                     limit: Option<i64>,
-                                    page: Option<i64>) -> Result<Json<Vec<StorageBox>>, BadRequest<Json<MessageResponse>>> {
+                                    page: Option<i64>,
+                                    id: Option<i64>,
+                                    place: Option<String>,
+                                    item_type: Option<i64>) -> Result<Json<Vec<StorageBox>>, BadRequest<Json<MessageResponse>>> {
     let storage_system = app_state.get_storage_system();
 
     // calculate pagination
     let new_page = page.unwrap_or(0);
     let new_limit = limit.unwrap_or(64);
-    let start = new_limit * new_page + 1;
-    let end = new_limit * (new_page + 1);
+    let offset = new_limit * new_page;
 
     match conditional_query_as!(StorageBox,
         r#"SELECT *
         FROM storage_boxes
-        {#pagination}
-        ORDER BY ID ASC;"#,
+        WHERE 1
+        {#id}
+        {#place}
+        {#item_type}
+        ORDER BY id ASC
+        {#pagination};"#,
+        #id = match id.as_ref() {
+            Some(_) =>
+                "AND id = {id}",
+            None => "",
+        },
+        #place = match place.as_ref() {
+            Some(_) =>
+                "AND place LIKE '%' || {place} || '%'",
+            None => "",
+        },
+        #item_type = match item_type.as_ref() {
+            Some(_) =>
+                "AND item_type = {item_type}",
+            None => "",
+        },
         #pagination = match limit {
             Some(_) =>
-                "WHERE id BETWEEN {start} AND {end}",
+                "LIMIT {new_limit} OFFSET {offset}",
             None => "",
         },
     ).fetch_all(storage_system.get_database()).await {
