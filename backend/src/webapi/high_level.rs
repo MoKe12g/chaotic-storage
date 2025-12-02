@@ -6,9 +6,7 @@ use rocket::{get, State};
 use sqlx::query_as;
 
 #[get("/allocation_item_count/<allocation_id>")]
-pub(crate) async fn get_allocation_by_id(app_state: &State<api::AppState>, allocation_id: i64) -> Result<Json<CountOfItemsInAllocation>, BadRequest<Json<MessageResponse>>> {
-    // TODO: Get all transactions
-    // TODO Sum all transactions up
+pub(crate) async fn sum_transaction_items_for_allocation(app_state: &State<api::AppState>, allocation_id: i64) -> Result<Json<CountOfItemsInAllocation>, BadRequest<Json<MessageResponse>>> {
     match query_as!(CountOfItemsInAllocation, "SELECT sum(item_delta) as 'item_count!', (allocation_id) as 'allocation_id!' from transactions where allocation_id = ?1 LIMIT 1;", allocation_id)
         .fetch_optional(app_state.get_storage_system().get_database()).await {
         Err(err) => Err(BadRequest(Json(MessageResponse { message: err.to_string() + " from backend" }))),

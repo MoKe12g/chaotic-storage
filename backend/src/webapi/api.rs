@@ -18,7 +18,6 @@ impl API {
             .mount(
                 "/",
                 routes![
-                        // TODO: Routes,
                     categories::get_category,
                     categories::get_category_by_id,
                     categories::patch_category,
@@ -50,7 +49,7 @@ impl API {
                     item_type::post_item_type,
                     item_type::count_item_type_entries,
                     
-                    high_level::get_allocation_by_id,
+                    high_level::sum_transaction_items_for_allocation,
                     ],
             )
             .launch().await

@@ -54,8 +54,8 @@ pub(crate) async fn get_category(app_state: &State<api::AppState>,
 #[get("/categories/<id>")]
 pub(crate) async fn get_category_by_id(app_state: &State<api::AppState>, id: i64) -> Option<Json<Category>> {
     let storage_system = app_state.get_storage_system();
-    let categorie_from_id = Category::from(storage_system, id).await;
-    match categorie_from_id {
+    let category_from_id = Category::from(storage_system, id).await;
+    match category_from_id {
         Ok(category_from_id) => {
             category_from_id.map(Json)
         }
@@ -67,7 +67,6 @@ pub(crate) async fn get_category_by_id(app_state: &State<api::AppState>, id: i64
 #[post("/categories", data = "<input>")]
 pub async fn post_category(app_state: &State<api::AppState>, input: Json<Category>) -> Result<Json<Category>, BadRequest<Json<MessageResponse>>> {
     let storage_system = app_state.get_storage_system();
-    // TODO: Is there a better way than to just discard the given id?
     match Category::create(storage_system, input.into_inner().comment).await {
         Ok(result) => { Ok(Json(result)) }
         Err(err) => { Err(BadRequest(Json(MessageResponse { message: err.to_string() + " from backend" }))) }
@@ -80,7 +79,7 @@ pub async fn patch_category(app_state: &State<api::AppState>, id: i64,
                             input: Json<Category>) -> Result<Json<Category>, BadRequest<Json<MessageResponse>>> {
     let storage_system = app_state.get_storage_system();
     let new_value = Category { id, comment: input.comment.clone() }; // make sure that the id is right inside the struct
-    match new_value.update(&storage_system).await {
+    match new_value.update(storage_system).await {
         Ok(res) if res.rows_affected() > 0 => Ok(Json(new_value)),
         Ok(_) => Err(BadRequest(Json(MessageResponse { message: "No rows updated".into() }))),
         Err(err) => { Err(BadRequest(Json(MessageResponse { message: err.to_string() + " from backend" }))) }
@@ -96,7 +95,7 @@ pub async fn delete_category(app_state: &State<api::AppState>, id: i64) -> Resul
                 None => { Err(BadRequest(Json(MessageResponse { message: "Cannot find element".to_string() }))) } // BadRequest(Json(MessageResponse { message: "Cannot find id ".to_owned() + &*id.to_string() })))}
                 Some(result2) => {
                     let category = result2.clone();
-                    match result2.delete(&storage_system).await {
+                    match result2.delete(storage_system).await {
                         Ok(_) => { Ok(Json(category)) }
                         Err(err) => Err(BadRequest(Json(MessageResponse { message: err.to_string() + " from backend" })))
                     }
@@ -108,7 +107,6 @@ pub async fn delete_category(app_state: &State<api::AppState>, id: i64) -> Resul
 }
 
 // misc
-// TODO: Anzahl von erstellten Kategorien
 #[get("/count/categories")]
 pub async fn count_category_entries(app_state: &State<api::AppState>) -> Result<Json<EntriesCountResponse>, BadRequest<Json<MessageResponse>>> {
     let storage_system = app_state.get_storage_system();
