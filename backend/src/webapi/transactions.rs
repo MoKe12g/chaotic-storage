@@ -7,26 +7,47 @@ use rocket::{delete, get, patch, post, State};
 use sqlx::query_as;
 use sqlx_conditional_queries::conditional_query_as;
 
-#[get("/transactions?<limit>&<page>")]
+#[get("/transactions?<limit>&<page>&<id>&<allocation_id>&<item_delta>")]
 pub(crate) async fn get_transaction(app_state: &State<api::AppState>,
                                     limit: Option<i64>,
-                                    page: Option<i64>) -> Result<Json<Vec<Transaction>>, BadRequest<Json<MessageResponse>>> {
+                                    page: Option<i64>,
+                                    id: Option<i64>,
+                                    allocation_id: Option<i64>,
+                                    item_delta: Option<i64>) -> Result<Json<Vec<Transaction>>, BadRequest<Json<MessageResponse>>> {
     let storage_system = app_state.get_storage_system();
 
     // calculate pagination
     let new_page = page.unwrap_or(0);
     let new_limit = limit.unwrap_or(64);
-    let start = new_limit * new_page + 1;
-    let end = new_limit * (new_page + 1);
+    let offset = new_limit * new_page;
 
     match conditional_query_as!(Transaction,
         r#"SELECT *
         FROM transactions
-        {#pagination}
-        ORDER BY ID ASC;"#,
+        WHERE 1
+        {#id}
+        {#allocation_id}
+        {#item_delta}
+        ORDER BY id ASC
+        {#pagination};"#,
+        #id = match id.as_ref() {
+            Some(_) =>
+                "AND id = {id}",
+            None => "",
+        },
+        #allocation_id = match allocation_id.as_ref() {
+            Some(_) =>
+                "AND allocation_id = {allocation_id}",
+            None => "",
+        },
+        #item_delta = match item_delta.as_ref() {
+            Some(_) =>
+                "AND item_delta = {item_delta}",
+            None => "",
+        },
         #pagination = match limit {
             Some(_) =>
-                "WHERE id BETWEEN {start} AND {end}",
+                "LIMIT {new_limit} OFFSET {offset}",
             None => "",
         },
     ).fetch_all(storage_system.get_database()).await {
