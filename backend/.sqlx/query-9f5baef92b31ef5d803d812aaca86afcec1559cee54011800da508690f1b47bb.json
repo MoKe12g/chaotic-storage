@@ -1,0 +1,26 @@
+{
+  "db_name": "SQLite",
+  "query": "SELECT *\n        FROM item_types\n        WHERE 1\n        \n        AND storage_property = ?\n        ORDER BY id ASC\n        LIMIT ? OFFSET ?;",
+  "describe": {
+    "columns": [
+      {
+        "name": "id",
+        "ordinal": 0,
+        "type_info": "Integer"
+      },
+      {
+        "name": "storage_property",
+        "ordinal": 1,
+        "type_info": "Text"
+      }
+    ],
+    "parameters": {
+      "Right": 3
+    },
+    "nullable": [
+      false,
+      false
+    ]
+  },
+  "hash": "9f5baef92b31ef5d803d812aaca86afcec1559cee54011800da508690f1b47bb"
+}

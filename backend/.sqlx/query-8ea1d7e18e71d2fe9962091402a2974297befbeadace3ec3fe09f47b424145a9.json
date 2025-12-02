@@ -1,0 +1,26 @@
+{
+  "db_name": "SQLite",
+  "query": "SELECT *\n        FROM item_types\n        WHERE 1\n        \n        \n        ORDER BY id ASC\n        ;",
+  "describe": {
+    "columns": [
+      {
+        "name": "id",
+        "ordinal": 0,
+        "type_info": "Integer"
+      },
+      {
+        "name": "storage_property",
+        "ordinal": 1,
+        "type_info": "Text"
+      }
+    ],
+    "parameters": {
+      "Right": 0
+    },
+    "nullable": [
+      false,
+      false
+    ]
+  },
+  "hash": "8ea1d7e18e71d2fe9962091402a2974297befbeadace3ec3fe09f47b424145a9"
+}

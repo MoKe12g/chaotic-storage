@@ -7,26 +7,40 @@ use rocket::{delete, get, patch, post, State};
 use sqlx::query_as;
 use sqlx_conditional_queries::conditional_query_as;
 
-#[get("/item_types?<limit>&<page>")]
+#[get("/item_types?<limit>&<page>&<id>&<storage_property>")]
 pub(crate) async fn get_item_type(app_state: &State<api::AppState>,
                                   limit: Option<i64>,
-                                  page: Option<i64>) -> Result<Json<Vec<ItemType>>, BadRequest<Json<MessageResponse>>> {
+                                  page: Option<i64>,
+                                  id: Option<i64>,
+                                  storage_property: Option<String>) -> Result<Json<Vec<ItemType>>, BadRequest<Json<MessageResponse>>> {
     let storage_system = app_state.get_storage_system();
 
     // calculate pagination
     let new_page = page.unwrap_or(0);
     let new_limit = limit.unwrap_or(64);
-    let start = new_limit * new_page + 1;
-    let end = new_limit * (new_page + 1);
+    let offset = new_limit * new_page;
 
     match conditional_query_as!(ItemType,
         r#"SELECT *
         FROM item_types
-        {#pagination}
-        ORDER BY ID ASC;"#,
+        WHERE 1
+        {#id}
+        {#storage_property}
+        ORDER BY id ASC
+        {#pagination};"#,
+        #id = match id.as_ref() {
+            Some(_) =>
+                "AND id = {id}",
+            None => "",
+        },
+        #storage_property = match storage_property.as_ref() {
+            Some(_) =>
+                "AND storage_property = {storage_property}",
+            None => "",
+        },
         #pagination = match limit {
             Some(_) =>
-                "WHERE id BETWEEN {start} AND {end}",
+                "LIMIT {new_limit} OFFSET {offset}",
             None => "",
         },
     ).fetch_all(storage_system.get_database()).await {

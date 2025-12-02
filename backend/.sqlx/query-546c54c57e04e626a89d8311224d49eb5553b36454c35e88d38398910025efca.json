@@ -1,6 +1,6 @@
 {
   "db_name": "SQLite",
-  "query": "SELECT *\n        FROM item_types\n        WHERE id BETWEEN ? AND ?\n        ORDER BY ID ASC;",
+  "query": "SELECT *\n        FROM item_types\n        WHERE 1\n        \n        \n        ORDER BY id ASC\n        LIMIT ? OFFSET ?;",
   "describe": {
     "columns": [
       {
@@ -22,5 +22,5 @@
       false
     ]
   },
-  "hash": "ce6740691de413a2a05f593c3fe734c2a21ea175cc8331c7eb8e07022f0f199d"
+  "hash": "546c54c57e04e626a89d8311224d49eb5553b36454c35e88d38398910025efca"
 }
