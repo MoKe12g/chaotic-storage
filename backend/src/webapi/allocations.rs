@@ -14,7 +14,7 @@ pub(crate) async fn get_allocation(app_state: &State<api::AppState>,
                                    storage_box_id:Option<i64>,
                                    can_be_outside: Option<bool>,
                                    category_id:Option<i64>,
-                                   description:Option<i64>) -> Result<Json<Vec<Allocation>>, BadRequest<Json<MessageResponse>>> {
+                                   description:Option<String>) -> Result<Json<Vec<Allocation>>, BadRequest<Json<MessageResponse>>> {
     let storage_system = app_state.get_storage_system();
 
     // calculate pagination
