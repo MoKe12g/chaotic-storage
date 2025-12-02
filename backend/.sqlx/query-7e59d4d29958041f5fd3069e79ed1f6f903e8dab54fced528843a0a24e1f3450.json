@@ -1,6 +1,6 @@
 {
   "db_name": "SQLite",
-  "query": "SELECT *\n        FROM categories\n        WHERE id BETWEEN ? AND ?;",
+  "query": "SELECT *\n        FROM categories\n        WHERE 1\n        AND id = ?\n        \n        ORDER BY id ASC\n        ;",
   "describe": {
     "columns": [
       {
@@ -15,12 +15,12 @@
       }
     ],
     "parameters": {
-      "Right": 2
+      "Right": 1
     },
     "nullable": [
       false,
       false
     ]
   },
-  "hash": "6554bb6d9ae805d8d04c49052269d31baa0f4f83ceb47138d7b802e6b55212a5"
+  "hash": "7e59d4d29958041f5fd3069e79ed1f6f903e8dab54fced528843a0a24e1f3450"
 }

@@ -1,6 +1,6 @@
 {
   "db_name": "SQLite",
-  "query": "SELECT *\n        FROM categories\n        ;",
+  "query": "SELECT *\n        FROM categories\n        WHERE 1\n        \n        \n        ORDER BY id ASC\n        LIMIT ? OFFSET ?;",
   "describe": {
     "columns": [
       {
@@ -15,12 +15,12 @@
       }
     ],
     "parameters": {
-      "Right": 0
+      "Right": 2
     },
     "nullable": [
       false,
       false
     ]
   },
-  "hash": "02eaa3edb66429a1ea1f6b88dce2fcf4f93ff8bcf7149737fa9a0f608419140d"
+  "hash": "546f1e7cca49974c9f0a35da7244fc37354133e14b163d2291dd558711913885"
 }

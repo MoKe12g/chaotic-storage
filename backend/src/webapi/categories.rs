@@ -7,25 +7,40 @@ use rocket::{delete, get, patch, post, State};
 use sqlx::query_as;
 use sqlx_conditional_queries::conditional_query_as;
 
-#[get("/categories?<limit>&<page>")]
+#[get("/categories?<limit>&<page>&<id>&<comment>")]
 pub(crate) async fn get_category(app_state: &State<api::AppState>,
                                  limit: Option<i64>,
-                                 page: Option<i64>) -> Result<Json<Vec<Category>>, BadRequest<Json<MessageResponse>>> {
+                                 page: Option<i64>,
+                                 id: Option<i64>,
+                                 comment: Option<String>) -> Result<Json<Vec<Category>>, BadRequest<Json<MessageResponse>>> {
     let storage_system = app_state.get_storage_system();
 
     // calculate pagination
     let new_page = page.unwrap_or(0);
     let new_limit = limit.unwrap_or(64);
-    let start = new_limit * new_page + 1;
-    let end = new_limit * (new_page + 1);
+    let offset = new_limit * new_page;
 
     match conditional_query_as!(Category,
         r#"SELECT *
         FROM categories
+        WHERE 1
+        {#id}
+        {#comment}
+        ORDER BY id ASC
         {#pagination};"#,
-        #pagination = match limit {
+        #id = match id.as_ref() {
             Some(_) =>
-                "WHERE id BETWEEN {start} AND {end}",
+                "AND id = {id}",
+            None => "",
+        },
+        #comment = match comment.as_ref() {
+            Some(_) =>
+                "AND comment LIKE '%' || {comment} || '%'",
+            None => "",
+        },
+        #pagination = match limit.as_ref() {
+            Some(_) =>
+                "LIMIT {new_limit} OFFSET {offset}",
             None => "",
         },
     ).fetch_all(storage_system.get_database()).await {
